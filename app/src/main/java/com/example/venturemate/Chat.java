@@ -12,8 +12,12 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -68,7 +72,7 @@ public class Chat extends AppCompatActivity {
         Log.d(TAG, reference1.toString());
 
 
-        Log.d(TAG, "beforeonclick");
+
         sendButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -80,53 +84,60 @@ public class Chat extends AppCompatActivity {
                     Map<String, String> map = new HashMap<String, String>();
                     map.put("message", messageText);
                     map.put("user", UserDetails.username);
-                    reference1.setValue(map);
-                    reference2.setValue(map);
-                    reference1.push();
-                    reference2.push();
+                    reference1.push().setValue(map);
+                    reference2.push().setValue(map);
+//                    Log.d(TAG,"ljfdansklfj"+ reference1.toString());
+//                    reference1.push();
+//                    reference2.push();
                     messageArea.setText("");
                 }
             }
         });
 
-//        reference1.addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//                Map map = (HashMap<String, String>)dataSnapshot.getValue(Map.class);
-//
-//                String message = map.get("message").toString();
-//                String userName = map.get("user").toString();
-//
-//                if(userName.equals(UserDetails.username)){
-//                    addMessageBox("You:-\n" + message, 1);
-//                }
-//                else{
-//                    addMessageBox(UserDetails.chatWith + ":-\n" + message, 2);
-//                }
-//            }
-//
-//            @Override
-//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//
-//
-//        });
+        reference1.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Log.d(TAG, "string "+s);
+                Log.d(TAG,"sanp" +dataSnapshot.toString());
+
+//                Map<String, String> map = (Map<String, String>)dataSnapshot.getValue()
+                  Map<String, Object> map = (HashMap<String, Object>) dataSnapshot.getValue();
+//                Map<String, String> map = (Map<String, String>)dataSnapshot.getValue(Map.class);
+                Log.d(TAG,"map  " +map.toString());
+                String message = map.get("message").toString();
+                String userName = map.get("user").toString();
+
+                if(userName.equals(UserDetails.username)){
+                    addMessageBox("You:-\n" + message, 1);
+                }
+                else{
+                    addMessageBox(UserDetails.chatWith + ":-\n" + message, 2);
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+
+
+
+        });
     }
 
     public void addMessageBox(String message, int type){
