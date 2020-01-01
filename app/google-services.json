@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "630567363721",
+    "firebase_url": "https://venturemate-c797e.firebaseio.com",
+    "project_id": "venturemate-c797e",
+    "storage_bucket": "venturemate-c797e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:630567363721:android:baa46764a98b73b2095258",
+        "android_client_info": {
+          "package_name": "com.example.venturemate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "630567363721-frfaam28gjv3l28uh15dmv5n2urimqro.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.venturemate",
+            "certificate_hash": "02c5591c81dea1cd45438b2c161ffd3d033549b1"
+          }
+        },
+        {
+          "client_id": "630567363721-gen9tbggcfnn550s8n5blutdkls06h28.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.venturemate",
+            "certificate_hash": "13f18bd13d12b15537884e4ad72b146778919a03"
+          }
+        },
+        {
+          "client_id": "630567363721-4bfsdlhpte95vsos842mfd93s8ms2c2b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-TKNIjmcjoJ0HnXbvZOdSVWBq1evqUY8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "630567363721-4bfsdlhpte95vsos842mfd93s8ms2c2b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
