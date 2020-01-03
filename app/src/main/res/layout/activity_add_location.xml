@@ -47,15 +47,15 @@
 
         <Button
             android:id="@+id/button"
-            style="@android:style/Widget.Material.Light.Button.Borderless"
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="153dp"
             android:layout_height="58dp"
             android:layout_marginLeft="110dp"
             android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="Add Location"
             android:background="@drawable/btn_shape_capsule"
-            android:padding="8dp"/>
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="Proceed" />
 
         <Button
             android:id="@+id/button2"

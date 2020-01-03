@@ -1,36 +1,45 @@
 package com.example.venturemate;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+
+import com.example.venturemate.AddLocation;
+import com.example.venturemate.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 public class MainActivity extends AppCompatActivity {
-    private  static String TAG = "mTAG";
 
     //views
     Button registerBtn, loginBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "Started");
         setContentView(R.layout.activity_main);
 
 
-//        //init views
-//        registerBtn = findViewById(R.id.register_btn);
-//        loginBtn = findViewById(R.id.login_btn);
-//
-//        //handle register button click
-//        registerBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
+        //init views
+        registerBtn = findViewById(R.id.register_btn);
+        loginBtn = findViewById(R.id.login_btn);
+
+        //handle register button click
+        registerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // Intent myIntent = new Intent(MainActivity.this, AddLocation.class);
+                Intent myIntent = new Intent(MainActivity.this, CategorySelection.class);
+                MainActivity.this.startActivity(myIntent);
+            }
+        });
     }
 
     @Override

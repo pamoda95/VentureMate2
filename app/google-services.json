@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:630567363721:android:baa46764a98b73b2095258",
         "android_client_info": {
-          "package_name": "com.example.venturemate"
+          "package_name": "com.example.ventremate"
         }
       },
       "oauth_client": [
@@ -18,12 +18,57 @@
           "client_id": "630567363721-frfaam28gjv3l28uh15dmv5n2urimqro.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.venturemate",
+            "package_name": "com.example.ventremate",
             "certificate_hash": "02c5591c81dea1cd45438b2c161ffd3d033549b1"
           }
         },
         {
           "client_id": "630567363721-gen9tbggcfnn550s8n5blutdkls06h28.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ventremate",
+            "certificate_hash": "13f18bd13d12b15537884e4ad72b146778919a03"
+          }
+        },
+        {
+          "client_id": "630567363721-4bfsdlhpte95vsos842mfd93s8ms2c2b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-TKNIjmcjoJ0HnXbvZOdSVWBq1evqUY8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "630567363721-4bfsdlhpte95vsos842mfd93s8ms2c2b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:630567363721:android:188dd7bcee0d329f095258",
+        "android_client_info": {
+          "package_name": "com.example.venturemate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "630567363721-q3evf0joih33botrvhp7vb42ue15g3lg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.venturemate",
+            "certificate_hash": "02c5591c81dea1cd45438b2c161ffd3d033549b1"
+          }
+        },
+        {
+          "client_id": "630567363721-2rcg13cnq1usgsq13ardu7ges88gmpmg.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.venturemate",

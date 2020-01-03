@@ -251,4 +251,9 @@ public class AddLocation extends AppCompatActivity implements OnMapReadyCallback
     public void onConnectionFailed(ConnectionResult connectionResult) {
         Toast.makeText(getApplicationContext(), "Connection Failed", Toast.LENGTH_SHORT).show();
     }
+
+    public void addLocation(){
+
+
+    }
 }
