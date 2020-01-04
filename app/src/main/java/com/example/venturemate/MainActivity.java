@@ -3,11 +3,15 @@ package com.example.venturemate;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.venturemate.AddLocation;
-import com.example.venturemate.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -20,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     //views
     Button registerBtn, loginBtn;
+    DatabaseReference dbUsers;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,12 +39,18 @@ public class MainActivity extends AppCompatActivity {
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                // Intent myIntent = new Intent(MainActivity.this, AddLocation.class);
-                Intent myIntent = new Intent(MainActivity.this, CategorySelection.class);
-                MainActivity.this.startActivity(myIntent);
+                startActivity(new Intent(MainActivity.this,RegisterActivity.class));
             }
         });
+
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this,LoginActivity.class));
+            }
+        });
+
+
     }
 
     @Override
@@ -57,9 +68,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+
 
         return super.onOptionsItemSelected(item);
     }
