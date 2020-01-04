@@ -2,11 +2,14 @@ package com.example.venturemate;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.venturemate.R;
@@ -34,6 +37,8 @@ public class AddLocation extends AppCompatActivity implements OnMapReadyCallback
         GoogleApiClient.OnConnectionFailedListener {
 
     private MapView mMapView;
+    private Button proceedButton;
+    private Button cancelButton;
 
     private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
 
@@ -45,6 +50,7 @@ public class AddLocation extends AppCompatActivity implements OnMapReadyCallback
     Marker mCurrLocationMarker;
     GoogleApiClient mGoogleApiClient;
     LocationRequest mLocationRequest;
+
 
 
     @Override
@@ -61,9 +67,33 @@ public class AddLocation extends AppCompatActivity implements OnMapReadyCallback
 
         mMapView.getMapAsync(this);
 
+
+        proceedButton = findViewById(R.id.proceed_button);
+        proceedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onProceedClicked();
+            }
+        });
+
+        cancelButton = findViewById(R.id.cancel_button);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent myIntent = new Intent(AddLocation.this, CategorySelection.class);
+                AddLocation.this.startActivity(myIntent);
+            }
+        });
     }
 
 
+    public void onProceedClicked(){
+        Intent myIntent = new Intent(AddLocation.this, LocationDetailAdder.class);
+        myIntent.putExtra("latitude",mLastLocation.getLatitude());
+        myIntent.putExtra("longitude",mLastLocation.getLongitude());
+        AddLocation.this.startActivity(myIntent);
+    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -223,7 +253,6 @@ public class AddLocation extends AppCompatActivity implements OnMapReadyCallback
 
     @Override
     public void onLocationChanged(Location location) {
-
         mLastLocation = location;
         if (mCurrLocationMarker != null) {
             mCurrLocationMarker.remove();
