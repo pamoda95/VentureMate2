@@ -85,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = dbAuth.getCurrentUser();
 
-                            startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
+                            startActivity(new Intent(LoginActivity.this, CategorySelection.class));
                             finish();
                         } else {
                             // If sign in fails, display a message to the user.
