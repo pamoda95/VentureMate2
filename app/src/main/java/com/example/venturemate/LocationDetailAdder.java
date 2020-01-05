@@ -2,16 +2,26 @@ package com.example.venturemate;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 
+import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -37,6 +47,10 @@ import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -100,7 +114,7 @@ public class LocationDetailAdder extends AppCompatActivity {
         camera_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(takePicture, 0);//zero can be replaced with any action code (called requestCode)
+                startActivityForResult(takePicture, 0);
             }
         });
 
@@ -109,7 +123,7 @@ public class LocationDetailAdder extends AppCompatActivity {
             public void onClick(View v) {
                 Intent pickPhoto = new Intent(Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(pickPhoto , 1);//one can be replaced with any action code
+                startActivityForResult(pickPhoto , 1);
             }
         });
 
@@ -120,31 +134,48 @@ public class LocationDetailAdder extends AppCompatActivity {
             }
         });
 
-
+        detail_adding_cancel_button = (Button) findViewById(R.id.detail_adding_cancel_button);
+        detail_adding_cancel_button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent myIntent = new Intent(LocationDetailAdder.this, CategorySelection.class);
+                LocationDetailAdder.this.startActivity(myIntent);
+            }
+        });
     }
 
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
-                if(resultCode == RESULT_OK){
-                    selectedImage = imageReturnedIntent.getData();
-                    imageView.setImageURI(selectedImage);
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case 0: {
+                if (resultCode == RESULT_OK) {
+                    Bundle extras = data.getExtras();
+                    Bitmap imageBitmap = (Bitmap) extras.get("data");
+                    imageView.setImageBitmap(imageBitmap);
+
+                    String p =getImageUri(LocationDetailAdder.this,imageBitmap);
+                    Toast.makeText(LocationDetailAdder.this, p , Toast.LENGTH_SHORT).show();
+                    selectedImage =Uri.parse(p);
+
                 }
+            }
+            case 1: {
+                    if (resultCode == RESULT_OK) {
+                        selectedImage = data.getData();
+                        imageView.setImageURI(selectedImage);
+                    }
+                }
+            }
+        }
 
+    public String getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return path;
     }
-  /*  private String  placeName;
-    private String  category;
-    private String  description;
-    private GeoFire coordinates;
-    private String  route;
-    private String  weather;
-    private String  specialNotice;
-    private String  nearestTown;
-    private String  difficultes;
-    private Bitmap image;
-    private int likes;*/
 
         public void onSubmitButtonClicked (){
             uploadData();
@@ -154,35 +185,10 @@ public class LocationDetailAdder extends AppCompatActivity {
 
         if(selectedImage != null)
         {
-
-            /*StorageReference ref = storageReference.child(id);
-            StorageTask<UploadTask.TaskSnapshot> uploaded = ref.putFile(selectedImage)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            downloadUri = taskSnapshot.getUploadSessionUri().toString();
-                            progressDialog.dismiss();
-                           Toast.makeText(LocationDetailAdder.this, "Uploaded", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            progressDialog.dismiss();
-                            Toast.makeText(LocationDetailAdder.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
-                                    .getTotalByteCount());
-                            progressDialog.setMessage("Uploaded " + (int) progress + "%");
-                        }
-                    });*/
             id = UUID.randomUUID().toString();
 
            final Map<String, Object> place = new HashMap<String, Object>();
+            place.put("placeId", id);
             place.put("placeName", placeNameText.getText().toString());
             place.put("category", spin_cat.getSelectedItem().toString());
             place.put("description", locationDescriptionText.getText().toString());
@@ -190,7 +196,10 @@ public class LocationDetailAdder extends AppCompatActivity {
             place.put("route", routeText.getText().toString());
             place.put("specialNotice", locationDescriptionText.getText().toString());
             place.put("difficultes", difficultiesText.getText().toString());
-
+            place.put("pLikes", 0);
+            place.put("pComments", 0);
+            place.put("latitude", lat);
+            place.put("longitude", lon);
 
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Uploading...");
@@ -219,16 +228,12 @@ public class LocationDetailAdder extends AppCompatActivity {
                 public void onComplete(@NonNull Task<Uri> task) {
                     if (task.isSuccessful()) {
                         Uri downloadUri = task.getResult();
-                        Toast.makeText(LocationDetailAdder.this, downloadUri.toString(), Toast.LENGTH_SHORT).show();
-                        place.put("latitude", lat);
-                        place.put("longitude", lon);
                         place.put("image",downloadUri.toString());
                         myRef.child(id).setValue(place);
-                        //DatabaseReference ref = FirebaseDatabase.getInstance().getReference("places"+id);
-                        //GeoFire geoFire = new GeoFire(ref);
-                        //geoFire.setLocation("coordinates", new GeoLocation(lat, lon));
                         progressDialog.dismiss();
-                        Toast.makeText(LocationDetailAdder.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LocationDetailAdder.this, "Upload Successful", Toast.LENGTH_SHORT).show();
+                        Intent myIntent = new Intent(LocationDetailAdder.this, CategorySelection.class);
+                        LocationDetailAdder.this.startActivity(myIntent);
                     }
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -238,6 +243,10 @@ public class LocationDetailAdder extends AppCompatActivity {
                     Toast.makeText(LocationDetailAdder.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
+        }
+        else{
+            Toast.makeText(LocationDetailAdder.this, "Please insert an image", Toast.LENGTH_SHORT).show();
+
         }
 
     }
