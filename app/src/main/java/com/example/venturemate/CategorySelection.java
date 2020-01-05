@@ -14,9 +14,11 @@ import com.example.venturemate.R;
 
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.GeoQuery;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -35,7 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class CategorySelection extends AppCompatActivity implements LocationListener {
-
+    private  static String TAG = "geofireTAG";
     GridView gridView;
     Button addNewLocationButton;
     LocationManager locationManager;
@@ -48,6 +50,16 @@ public class CategorySelection extends AppCompatActivity implements LocationList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_selection);
+
+        Log.d(TAG, "oncreateGeao");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Active_users");
+        Log.d(TAG, "geoaaaaaaaaaaaa");
+//        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users");
+        GeoFire geoFire = new GeoFire(ref);
+
+        geoFire.setLocation("X4v0Hmgxz1cr4LKNC86pjH6IpkG3", new GeoLocation(6.798813, 79.902468));
+
+
 
         addNewLocationButton = findViewById(R.id.add_button);
         addNewLocationButton.setOnClickListener(new View.OnClickListener() {
@@ -90,13 +102,31 @@ public class CategorySelection extends AppCompatActivity implements LocationList
 
     }
 
+
+
     @Override
     public void onLocationChanged(Location location) {
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users/ULLPMiPHGCd3zYqv5OjeFuKkWOE2");
-        GeoFire geoFire = new GeoFire(ref);
-        geoFire.setLocation("location", new GeoLocation(location.getLatitude(), -location.getLongitude()));
 
+//        Log.d(TAG, "onLocationChange");
+//
+//        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+//        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users/7lqitaKDlQaxeQiYDtwAyuOvkEP2");
+//        Log.d(TAG, "geoaaaaaaaaaaaa");
+////        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users");
+//        GeoFire geoFire = new GeoFire(ref);
+//
+//        geoFire.setLocation("location", new GeoLocation(location.getLatitude(), -location.getLongitude()), new GeoFire.CompletionListener(){
+//
+//            @Override
+//            public void onComplete(String key, DatabaseError error) {
+//                Log.d(TAG, "geoError"+ error);
+//
+//            }
+//        });
+
+        Log.d(TAG, "geo");
+//        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(37.7832, -122.4056), 0.6);
+//        Log.d(TAG, "geo "+ geoQuery);
          }
 
     @Override
