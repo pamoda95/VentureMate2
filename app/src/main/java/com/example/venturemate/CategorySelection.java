@@ -69,10 +69,10 @@ public class CategorySelection extends AppCompatActivity implements LocationList
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                Toast.makeText(
-                        getApplicationContext(),
-                        ((TextView) v.findViewById(R.id.grid_item_label))
-                                .getText(), Toast.LENGTH_SHORT).show();
+                String name = ((TextView) v.findViewById(R.id.grid_item_label)).getText().toString();
+                Intent intent= new Intent(CategorySelection.this, CategoryData.class);
+                intent.putExtra("CATEGORY", name);
+                CategorySelection.this.startActivity(intent);
 
             }
         });
@@ -95,12 +95,10 @@ public class CategorySelection extends AppCompatActivity implements LocationList
     @Override
     public void onLocationChanged(Location location) {
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-       DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Active_users");
-        //DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Active_users");
         GeoFire geoFire = new GeoFire(ref);
         geoFire.setLocation("ULLPMiPHGCd3zYqv5OjeFuKkWOE2", new GeoLocation(location.getLatitude(), location.getLongitude()));
-        // GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(location.getLatitude(), location.getLongitude()), 0.6);
-        // Log.d(TAG, geoQuery.toString());
+        ref.child("ULLPMiPHGCd3zYqv5OjeFuKkWOE2").child("username").setValue("ksdnsdj");
     }
 
     @Override

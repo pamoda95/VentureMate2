@@ -7,10 +7,13 @@ public class ModelComment {
     private String uName;
     private String uid;
     private String timestamp;
-    public ModelComment (String cId,String comment,String uDp,String uName,String uid,String timestamp) {
+    public ModelComment(){
+
+    }
+    public ModelComment (String cId,String comment,String uDp,String uName,String uid) {
         this.setcId(cId);
         this.setComment(comment);
-        this.setTimestamp(timestamp);
+        this.setTimestamp(cId);
         this.setuDp(uDp);
         this.setuName(uName);
         this.setUid(uid);

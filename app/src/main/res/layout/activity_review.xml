@@ -7,8 +7,10 @@
     tools:context=".ReviewActivity">
 
     <androidx.core.widget.NestedScrollView
+        android:layout_above="@id/commentLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -41,8 +43,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Title"
-                        android:textSize="16sp"
-                        android:textStyle="bold"/>.
+                        android:textSize="30sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorBlack"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        />.
 
                     <ImageView
                         android:id="@+id/pImage"
@@ -139,9 +145,20 @@
     </androidx.core.widget.NestedScrollView>
 
     <RelativeLayout
+        android:id="@+id/commentLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_Image"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/profile"
+            app:civ_border_width="2dp"
+            app:civ_border_color="#FF000000"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp" />
 
         <EditText
             android:id="@+id/comment_txt"
@@ -155,7 +172,7 @@
             android:layout_centerVertical="true"
             android:layout_marginTop="1dp"
             android:layout_marginBottom="1dp"
-            android:layout_toLeftOf="@+id/send_btn"/>
+            android:layout_toRightOf="@+id/profile_Image"/>
 
         <ImageButton
             android:id="@+id/send_btn"
@@ -164,7 +181,9 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_send"
             android:background="@null"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="1dp"/>
     </RelativeLayout>
 
 

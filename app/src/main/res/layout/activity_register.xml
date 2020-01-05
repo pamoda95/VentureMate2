@@ -103,7 +103,8 @@
         android:layout_marginRight="40dp"
         android:drawableLeft="@drawable/register_ic"
         android:drawablePadding="5dp"
-        android:text="Register" />
+        android:text="Register"
+        />
 
     <TextView
         android:id="@+id/accntHaveAlrdy"
