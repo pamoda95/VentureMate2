@@ -44,6 +44,7 @@ public class CategorySelection extends AppCompatActivity implements LocationList
     GridView gridView;
     Button addNewLocationButton;
     LocationManager locationManager;
+    LatLng myLocation;
     private  static String TAG = "locationTAG";
 
 
@@ -103,6 +104,7 @@ public class CategorySelection extends AppCompatActivity implements LocationList
     @Override
     public void onLocationChanged(Location location) {
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        UserDetails.latLng = latLng;
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Active_users");
         GeoFire geoFire = new GeoFire(ref);
@@ -153,6 +155,13 @@ public class CategorySelection extends AppCompatActivity implements LocationList
         if (id == R.id.action_logout){
             FirebaseAuth.getInstance().signOut();
             checkUserStatus();
+        }
+
+        if (id == R.id.action_nearByUsers){
+            Intent myIntent = new Intent(CategorySelection.this, NearByUsers.class);
+            myIntent.putExtra("longitude",UserDetails.latLng.longitude);
+            myIntent.putExtra("latitude",UserDetails.latLng.latitude);
+            CategorySelection.this.startActivity(myIntent);
         }
         return super.onOptionsItemSelected(item);
     }

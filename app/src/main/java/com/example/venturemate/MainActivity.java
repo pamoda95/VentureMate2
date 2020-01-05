@@ -39,14 +39,14 @@ public class MainActivity extends AppCompatActivity {
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,CategorySelection.class));
+                startActivity(new Intent(MainActivity.this,RegisterActivity.class));
             }
         });
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,NearByUsers.class));
+                startActivity(new Intent(MainActivity.this,LoginActivity.class));
             }
         });
 
