@@ -457,8 +457,10 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
 
                         Marker m = mMap.addMarker(new MarkerOptions().
                             position(otherUserLocation).
-                                icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)).
+                                        icon(BitmapDescriptorFactory.fromResource(R.drawable.newmarker6)).
                                 title(userNmae.get(0)));
+//                                icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)).
+
                         m.setTag("set TAg");
                         nearbyMarkers.add(m);
 
