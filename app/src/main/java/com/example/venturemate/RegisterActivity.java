@@ -324,7 +324,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                 }
                                             });
 
-                                            startActivity(new Intent(RegisterActivity.this, ProfileActivity.class));
+                                            startActivity(new Intent(RegisterActivity.this, CategorySelection.class));
                                             finish();
                                         } else {
                                             Toast.makeText(RegisterActivity.this, "Some Error occured", Toast.LENGTH_SHORT).show();

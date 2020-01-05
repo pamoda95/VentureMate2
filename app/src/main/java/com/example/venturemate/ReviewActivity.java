@@ -68,7 +68,7 @@ public class ReviewActivity extends AppCompatActivity {
         ac.setDisplayShowHomeEnabled(true);
         ac.setDisplayHomeAsUpEnabled(true);
 
-        ImageView imageView = new ImageView(ac.getThemedContext());
+        /*ImageView imageView = new ImageView(ac.getThemedContext());
         imageView.setScaleType(ImageView.ScaleType.CENTER);
         imageView.setImageResource(R.drawable.adventure_travel);
         ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(
@@ -76,12 +76,12 @@ public class ReviewActivity extends AppCompatActivity {
                 ActionBar.LayoutParams.WRAP_CONTENT);
         layoutParams.rightMargin = 40;
         imageView.setLayoutParams(layoutParams);
-        ac.setCustomView(imageView);
+        ac.setCustomView(imageView);*/
 
-        //Intent intent = getIntent();
-        //postID = intent.getStringExtra("placeId");
+        Intent intent = getIntent();
+        postID = intent.getStringExtra("placeId");
         //DatabaseReference postsRef = FirebaseDatabase.getInstance().getReference().child("places");
-        postID = "a950dd1d-46e3-496b-bc72-1acacc7c5482";
+        //postID = "a950dd1d-46e3-496b-bc72-1acacc7c5482";
 
         pImage = findViewById(R.id.pImage);
         profile_Image = findViewById(R.id.profile_Image);

@@ -196,8 +196,8 @@ public class LocationDetailAdder extends AppCompatActivity {
             place.put("route", routeText.getText().toString());
             place.put("specialNotice", locationDescriptionText.getText().toString());
             place.put("difficultes", difficultiesText.getText().toString());
-            place.put("pLikes", 0);
-            place.put("pComments", 0);
+            place.put("pLikes", "0");
+            place.put("pComments", "0");
             place.put("latitude", lat);
             place.put("longitude", lon);
 
