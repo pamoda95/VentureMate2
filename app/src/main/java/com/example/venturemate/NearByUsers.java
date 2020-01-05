@@ -462,6 +462,7 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
 //                                icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)).
 
                         m.setTag("set TAg");
+                        m.showInfoWindow();
                         nearbyMarkers.add(m);
 
 
