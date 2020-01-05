@@ -66,16 +66,7 @@ public class Chat extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("messages");
 
-//        Map<String, String> map = new HashMap<String, String>();
-//        map.put("message", "mText");
-//        map.put("user", UserDetails.username);
-//
-//        myRef.setValue(map);
-//        myRef.push();
 
-//        Firebase.setAndroidContext(this);
-//        reference1 = new Firebase("https://androidchatapp-76776.firebaseio.com/messages/" + UserDetails.username + "_" + UserDetails.chatWith);
-//        reference2 = new Firebase("https://androidchatapp-76776.firebaseio.com/messages/" + UserDetails.chatWith + "_" + UserDetails.username);
         final DatabaseReference reference1 = myRef.child(UserDetails.username + "_" + UserDetails.chatWith);
         final DatabaseReference reference2 = myRef.child(UserDetails.chatWith + "_" + UserDetails.username);
         Log.d(TAG, reference1.toString());
@@ -94,9 +85,6 @@ public class Chat extends AppCompatActivity {
                     map.put("user", UserDetails.username);
                     reference1.push().setValue(map);
                     reference2.push().setValue(map);
-//                    Log.d(TAG,"ljfdansklfj"+ reference1.toString());
-//                    reference1.push();
-//                    reference2.push();
                     messageArea.setText("");
                 }
             }
