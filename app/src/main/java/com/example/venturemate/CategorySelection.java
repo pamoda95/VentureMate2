@@ -95,10 +95,12 @@ public class CategorySelection extends AppCompatActivity implements LocationList
     @Override
     public void onLocationChanged(Location location) {
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Active_users");
         GeoFire geoFire = new GeoFire(ref);
         geoFire.setLocation("ULLPMiPHGCd3zYqv5OjeFuKkWOE2", new GeoLocation(location.getLatitude(), location.getLongitude()));
         ref.child("ULLPMiPHGCd3zYqv5OjeFuKkWOE2").child("username").setValue("ksdnsdj");
+
     }
 
     @Override

@@ -1,6 +1,9 @@
 package com.example.venturemate;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -73,11 +76,14 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
     GoogleApiClient mGoogleApiClient;
     LocationRequest mLocationRequest;
     private boolean mLocationPermissionGranted;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nearby_users);
+        context=this;
+
 //        currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 //        currentUserID = ;
         Bundle mapViewBundle = null;
@@ -94,112 +100,10 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
 
 
 
-        //Find Nearby Users Button
-//        Button mLookupUsers = (Button) findViewById(R.id.LookupUsers);
-//        mLookupUsers.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                nearbyUsers = new ArrayList<String>();
-//                nearbyMarkers = new ArrayList<>();
-//                getNearbyUsers();
-////                markNearbyUsers();
-//            }
-//        });
-
     }
 
 
-//    private void getNearbyUsers() {
-//
-//        if (nearbyHashMap != null) {
-//            Iterator iterator = nearbyHashMap.entrySet().iterator();
-//            while (iterator.hasNext()) {
-//                Map.Entry<String, Marker> pair = (Map.Entry<String, Marker>) iterator.next();
-//                pair.getValue().remove();
-//            }
-//
-//            nearbyHashMap.clear();
-//
-//        } else
-//            nearbyHashMap = new HashMap<>();
-//
-//
-//        DatabaseReference userLocation = FirebaseDatabase.
-//                getInstance().getReference().child("Active_users");
-//
-//        GeoFire geoFire = new GeoFire(userLocation);
-//        Log.d(TAG , "location "+userLocation.toString());
-//
-//        //String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-//
-////        Log.d(TAG , mLastLocation.toString());
-////        GeoQuery geoQuery =
-////                geoFire.queryAtLocation(
-////                        new GeoLocation(
-////                                mLastLocation.getLatitude(), mLastLocation.getLongitude()),radius);
-//        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(6.798113, 79.902269), 10);
-//
-//
-//        //Query Listener
-//
-//        geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
-//            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-//            @Override
-//            public void onKeyEntered(String key, GeoLocation location) {
-//                userFound = true;
-//                Log.d(TAG , key );
-//
-//                if (!Objects.equals(key, "7lqitaKDlQaxeQiYDtwAyuOvkEP2")) {
-//                    nearbyUsers.add(key);
-//
-//
-////                    Log.d(TAG, "Current user is " + FirebaseAuth.getInstance().getCurrentUser().getUid());
-//                    Log.d(TAG , "UserID found" + key + " array size is" + nearbyUsers.size());
-//
-//
-//                    Marker m = mMap.addMarker(new MarkerOptions().
-//                            position(new LatLng(location.latitude, location.longitude)).
-//                            title(key));
-//                    nearbyMarkers.add(m);
-////                    m.setTag(key);
-//
-//
-//                    nearbyHashMap.put(key, m);
-//
-//                }
-//                //markNearbyUsers();
-//
-//
-//            }
-//
-//            @Override
-//            public void onKeyExited(String key) {
-//
-//            }
-//
-//            @Override
-//            public void onKeyMoved(String key, GeoLocation location) {
-//
-//            }
-//
-//            @Override
-//            public void onGeoQueryReady() {
-//                if (!userFound) {
-////                    radius += 0.1;
-//                    getNearbyUsers();
-//                }
-//                markNearbyUsers();
-//
-//            }
-//
-//            @Override
-//            public void onGeoQueryError(DatabaseError error) {
-//
-//            }
-//        });
-//
-//
-//    }
+
 
 
     private void getNearbyUsers() {
@@ -235,7 +139,7 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
 //                                mLastLocation.getLatitude(), mLastLocation.getLongitude()),10000);
 
 
-        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(6.798113, 79.902269), 1000000);
+        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(6.798113, 79.902269), 1.5);
         Log.d(TAG ,"chschj  "+ geoQuery.toString()+"   "+ geoQuery);
         geoQuery.removeAllListeners();
 
@@ -245,41 +149,24 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
             @Override
             public void onKeyEntered(String key, GeoLocation location) {
                 userFound = true;
+                final String[] userName={} ;
                 Log.d(TAG , "found userssssssssssssss    "+key +" "+ location.toString());
 
                 Marker mCurrMarker = null;
 
-//                Log.d(TAG , "dghj");
-//                Log.d(TAG, key);
-//                Log.d(TAG, location.toString());
-//                nearbyUsers.add(key+"  "+location);
+//
 
                 Log.d(TAG,nearbyUsers.toString());
+
+
 
 
 //                if (!Objects.equals(key, FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                 if (!Objects.equals(key, "wgrui23t893rph3uihnhge")) {
                     nearbyUsers.add(key);
 
-//                    Log.i("currentUser", "Current user is " + FirebaseAuth.getInstance().getCurrentUser().getUid());
-                    Log.i("onKeyEntered: ", "UserID found" + key + " array size is" + nearbyUsers.size());
-
-                    Log.d(TAG,"beforeMarkertag");
-                    Marker m = mMap.addMarker(new MarkerOptions().
-                            position(new LatLng(location.latitude, location.longitude)).
-                            title(key));
-                    m.setTag(key);
-                    nearbyMarkers.add(m);
-
-//
-
-//                    nearbyMarkers.add(m);
-//                    nearbyHashMap.put(key, m);
-
-
                 }
-//                nearbyUsers.add(nearbyHashMap);
-//                markNearbyUsers();
+
 
 
             }
@@ -302,7 +189,7 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
 //                }
 
                 Log.d(TAG , "33333333333"+ nearbyUsers);
-//                markNearbyUsers();
+                markNearbyUsers();
 
             }
 
@@ -329,6 +216,39 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
 
     @Override
     public boolean onMarkerClick(Marker marker) {
+//        Toast.makeText(getApplicationContext(), "USER MARKER",
+//                Toast.LENGTH_LONG).show();
+
+        Log.d(TAG,marker.getTitle());
+        String title =marker.getTitle();
+
+        if(title.equals("Current Position")){
+            return false;
+
+        }
+
+        final String name = marker.getTitle();
+        String options[] = {"Chat with "+name};
+
+
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(context);
+
+
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (i==0) {
+                    UserDetails.chatWith = name;
+                    Intent intent = new Intent(context, Chat.class);
+                    context.startActivity(intent);
+                }
+            }
+        });
+
+        builder.create().show();
+
+
+
         return false;
     }
 
@@ -400,7 +320,7 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
         markerOptions.title("Current Position");
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
         mCurrLocationMarker = mMap.addMarker(markerOptions);
         Log.d(TAG2, "after add marker" + nearbyMarkers.toString() );
 
@@ -474,10 +394,7 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
-//    @Override
-//    public void onMapReady(GoogleMap googleMap) {
-//
-//    }
+
 
 
     int i;
@@ -485,13 +402,29 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
     //Adding markers to nearby users
     private void markNearbyUsers() {
 
-        mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(6, -79))
-                .title("Hello world"));
 
         Log.d(TAG, "markNearbyUsers:  nearbyUsers size" + nearbyUsers.size());
         for (i = 0; i < nearbyUsers.size(); i++) {
             Log.i("markNearbyUsers: ", "Value of i is: " + i);
+            final ArrayList<String> userNmae = new ArrayList<String>();
+
+            DatabaseReference userNameRef = FirebaseDatabase.getInstance().getReference().
+                    child("Active_users").child(String.valueOf(nearbyUsers.get(i))).child("username");
+            userNameRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Log.d(TAG,"NAME   SNAPSHOT  " +dataSnapshot.toString());
+                    userNmae.add((String) dataSnapshot.getValue());
+//                    userNmae[0] = (String) dataSnapshot.getValue();
+                    Log.d(TAG,"NAME      **************  " +userNmae);
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
 
             DatabaseReference userLocationRef = FirebaseDatabase.getInstance().getReference().
                     child("Active_users").child(String.valueOf(nearbyUsers.get(i))).child("l");
@@ -521,17 +454,16 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
 
                         }
 
-//                        Marker mkr = mMap.addMarker(new MarkerOptions().
-//                                        position(otherUserLocation).title("Hello Classes.User"));
-//                        mkr.setVisible(true);
 
+                        Marker m = mMap.addMarker(new MarkerOptions().
+                            position(otherUserLocation).
+                                icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)).
+                                title(userNmae.get(0)));
+                        m.setTag("set TAg");
+                        nearbyMarkers.add(m);
 
-//
-                        nearbyMarkers.add(mMap.addMarker(new MarkerOptions().
-                                position(otherUserLocation).title("Hello Classes.User")));
 
                         Log.d(TAG, "nearbyMarkers<>  "+nearbyMarkers.toString());
-
 
                     }
                 }
@@ -561,6 +493,8 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
         mMap.setOnMarkerClickListener(this);
 
         getNearbyUsers();
+
+
 //        markNearbyUsers();
 //        mMap.addMarker(new MarkerOptions()
 //                .position(new LatLng(6, -70))
@@ -575,6 +509,8 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
         mLocationRequest.setInterval(1000);
         mLocationRequest.setFastestInterval(1000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+
+
 
 
         if (ContextCompat.checkSelfPermission(this,
@@ -596,4 +532,9 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Toast.makeText(getApplicationContext(), "Connection Failed", Toast.LENGTH_SHORT).show();
     }
+
+
+
+
+
 }
