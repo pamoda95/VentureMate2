@@ -12,6 +12,10 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,6 +23,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".DisplayPlaceDetail"
+            android:parentActivityName=".CategoryData">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.venturemate.CategoryData" />
+            >></activity>
+        <activity
+            android:name=".CategoryData"
+            android:parentActivityName=".CategorySelection">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.venturemate.CategorySelection" />
+            >
+        </activity>
         <activity android:name=".ReviewActivity"></activity>
         <activity android:name=".ProfileActivity">
             <intent-filter>
@@ -26,8 +44,14 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity><activity
+            android:name=".LocationDetailAdder"
+            android:parentActivityName=".AddLocation">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.venturemate.AddLocation" />
+            >
         </activity>
-        <activity android:name=".LocationDetailAdder"></activity>
         <activity
             android:name=".CategorySelection"
             android:parentActivityName=".MainActivity">
@@ -35,8 +59,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.venturemate.MainActivity" />
         </activity>
-        <activity android:name=".AddLocation" />
-
+        <activity
+            android:name=".AddLocation"
+            android:parentActivityName=".CategorySelection">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.venturemate.CategorySelection" />
+            >
+        </activity>
         <activity android:name=".RegisterActivity" />
         <activity android:name=".LoginActivity" />
          <activity android:name=".Chat"></activity>
