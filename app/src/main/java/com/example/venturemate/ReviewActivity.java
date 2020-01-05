@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,15 +36,17 @@ public class ReviewActivity extends AppCompatActivity {
     String myUid, myEmail, myName, myDP, postID, postTitle;
 
     ImageView pImage;
-    TextView pTitle, pLikes;
-    ImageButton likeBtn, shareBtn;
-    Button commentBtn;
+    TextView pTitle, pLikes, pComments;
+    ImageButton likeBtn, shareBtn,commentBtn;
     LinearLayout profileLayout;
 
     EditText comment_text;
     ImageButton sendBtn;
 
+    int noOfLikes;
 
+    boolean mProcessComment = false;
+    boolean mProcessLike = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,12 +58,15 @@ public class ReviewActivity extends AppCompatActivity {
         ac.setDisplayShowHomeEnabled(true);
         ac.setDisplayHomeAsUpEnabled(true);
 
-        Intent intent = getIntent();
-        postID = intent.getStringExtra("placeId");
+        //Intent intent = getIntent();
+        //postID = intent.getStringExtra("placeId");
+        //DatabaseReference postsRef = FirebaseDatabase.getInstance().getReference().child("places");
+        postID = "a950dd1d-46e3-496b-bc72-1acacc7c5482";
 
         pImage = findViewById(R.id.pImage);
         pTitle = findViewById(R.id.pTitle);
         pLikes = findViewById(R.id.pLikes);
+        pComments = findViewById(R.id.pComments);
 
         likeBtn = findViewById(R.id.like);
         commentBtn = findViewById(R.id.comment);
@@ -71,11 +78,71 @@ public class ReviewActivity extends AppCompatActivity {
 
         loadPostInfo(this);
         loadUserInfo(this);
+        //createLikeDatabase();
 
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 postComment();
+            }
+        });
+
+        likeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                likePost();
+            }
+        });
+    }
+
+    private void loadLike() {
+
+        final DatabaseReference likesRef = FirebaseDatabase.getInstance().getReference().child("likes");
+        final String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        likesRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.child(postID).hasChild(userID)) {
+                    likeBtn.setImageResource(R.drawable.ic_liked);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void likePost() {
+        mProcessLike = true;
+
+        final DatabaseReference likesRef = FirebaseDatabase.getInstance().getReference().child("likes");
+        final DatabaseReference postsRef = FirebaseDatabase.getInstance().getReference().child("places");
+        final String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        likesRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (mProcessLike) {
+                    if (dataSnapshot.child(postID).hasChild(userID)) {
+                        postsRef.child(postID).child("pLikes").setValue(""+(noOfLikes-1));
+                        likesRef.child(postID).child(userID).removeValue();
+                        mProcessLike = false;
+                        likeBtn.setImageResource(R.drawable.ic_like);
+                    } else {
+                        postsRef.child(postID).child("pLikes").setValue(""+(noOfLikes+1));
+                        likesRef.child(postID).child(userID).setValue("Liked");
+                        mProcessLike = false;
+                        likeBtn.setImageResource(R.drawable.ic_liked);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
     }
@@ -90,13 +157,13 @@ public class ReviewActivity extends AppCompatActivity {
 
         String timeStamp = String.valueOf(System.currentTimeMillis());
 
-        DatabaseReference ref = FirebaseDatabase.getInstance("placeReviews").getReference().child(postID).child("comments");
-
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("placeReviews").child(postID).child("comments");
+        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         HashMap<String, Object> hashMap = new HashMap<>();
 
         hashMap.put("cId", timeStamp);
         hashMap.put("comment",comment);
-        hashMap.put("uid", myUid);
+        hashMap.put("uid", userID);
         hashMap.put("uDp", myDP);
         hashMap.put("uName", myName);
 
@@ -115,10 +182,10 @@ public class ReviewActivity extends AppCompatActivity {
         });
     }
 
-    boolean mProcessComment = false;
+
     private void updateCommentCount() {
         mProcessComment = true;
-        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("placeReviews").child(postID);
+        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("places").child(postID);
 
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -127,6 +194,7 @@ public class ReviewActivity extends AppCompatActivity {
                     String comments = ""+dataSnapshot.child("pComments").getValue();
                     int newCommentVal = Integer.parseInt(comments)+1;
                     ref.child("pComments").setValue(""+newCommentVal);
+                    pComments.setText(newCommentVal+" Comments");
                     mProcessComment = false;
                 }
             }
@@ -139,16 +207,19 @@ public class ReviewActivity extends AppCompatActivity {
     }
 
     private void loadUserInfo(final Context context) {
-        Query myRef = FirebaseDatabase.getInstance().getReference("users");
-        myRef.orderByChild("uid").equalTo(myUid).addListenerForSingleValueEvent(new ValueEventListener() {
+        Query myRef = FirebaseDatabase.getInstance().getReference("users").orderByKey().equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        System.out.println("bbbb user");
+        myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                System.out.println("bbbb user");
                 for (DataSnapshot ds: dataSnapshot.getChildren()) {
                     myName = ""+ds.child("name").getValue();
                     myDP = ""+ds.child("image").getValue();
+                    System.out.println("bbbb"+myName);
 
                     try {
-                        Picasso.with(context).load(myDP).into(pImage);
+                        //Picasso.with(context).load(myDP).into(pImage);
                     }
                     catch (Exception e) {
 
@@ -167,27 +238,37 @@ public class ReviewActivity extends AppCompatActivity {
     private void loadPostInfo(final Context context) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("places");
 
-        Query query = ref.orderByChild("placeId").equalTo(postID);
+        Query query = ref.orderByKey().equalTo(postID);
+        System.out.println("ssss"+postID);
 
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                System.out.println("aaaawwwwa");
                 for (DataSnapshot ds: dataSnapshot.getChildren()) {
-                    String pTitle_t = ""+ds.child("pName").getValue();
+                    String pTitle_t = ""+ds.child("placeName").getValue();
                     String pLikes_t = ""+ds.child("pLikes").getValue();
-                    String pImage_t = ""+ds.child("pImage").getValue();
+                    String pImage_t = ""+ds.child("image").getValue();
+                    String pComment_t = ""+ds.child("pComments").getValue();
 
                     pTitle.setText(pTitle_t);
-                    pLikes.setText(pLikes_t+"Likes");
+                    pLikes.setText(pLikes_t+" Likes");
+                    pComments.setText(pComment_t+" Comments");
+                    noOfLikes = Integer.parseInt(pLikes_t);
+
+                    System.out.println("aaaa"+pTitle_t);
+                    System.out.println("bbbb"+pLikes_t);
 
                     if (pImage_t.equals("noImage")) {
                         pImage.setVisibility(View.GONE);
+                        System.out.println("bbbbmmm");
                     }
                     else {
                         pImage.setVisibility(View.VISIBLE);
-
+                        System.out.println("bbbbnnnn");
                         try {
                             Picasso.with(context).load(pImage_t).into(pImage);
+
                         }
                         catch (Exception e) {
 
@@ -195,6 +276,8 @@ public class ReviewActivity extends AppCompatActivity {
                     }
 
                 }
+
+                loadLike();
             }
 
             @Override

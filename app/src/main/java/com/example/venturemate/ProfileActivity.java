@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -27,6 +28,13 @@ public class ProfileActivity extends AppCompatActivity {
         ac.setDisplayShowHomeEnabled(true);
 
         dbAuth = FirebaseAuth.getInstance();
+
+        findViewById(R.id.post_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(ProfileActivity.this,ReviewActivity.class));
+            }
+        });
     }
 
     private void checkUserStatus(){
