@@ -14,6 +14,7 @@ import com.example.venturemate.R;
 
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.GeoQuery;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -39,6 +40,7 @@ public class CategorySelection extends AppCompatActivity implements LocationList
     GridView gridView;
     Button addNewLocationButton;
     LocationManager locationManager;
+    private  static String TAG = "locationTAG";
 
 
     static final String[] CATEGORIES = new String[] {
@@ -93,11 +95,13 @@ public class CategorySelection extends AppCompatActivity implements LocationList
     @Override
     public void onLocationChanged(Location location) {
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users/ULLPMiPHGCd3zYqv5OjeFuKkWOE2");
+       DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Active_users");
+        //DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users");
         GeoFire geoFire = new GeoFire(ref);
-        geoFire.setLocation("location", new GeoLocation(location.getLatitude(), -location.getLongitude()));
-
-         }
+        geoFire.setLocation("ULLPMiPHGCd3zYqv5OjeFuKkWOE2", new GeoLocation(location.getLatitude(), location.getLongitude()));
+        // GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(location.getLatitude(), location.getLongitude()), 0.6);
+        // Log.d(TAG, geoQuery.toString());
+    }
 
     @Override
     public void onStatusChanged(String s, int i, Bundle bundle) {
