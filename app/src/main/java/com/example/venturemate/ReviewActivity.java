@@ -3,11 +3,14 @@ package com.example.venturemate;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,16 +32,23 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.zip.Inflater;
 
 public class ReviewActivity extends AppCompatActivity {
     String myUid, myEmail, myName, myDP, postID, postTitle;
 
-    ImageView pImage;
+    ImageView pImage,profile_Image;
     TextView pTitle, pLikes, pComments;
     ImageButton likeBtn, shareBtn,commentBtn;
     LinearLayout profileLayout;
+
+    RecyclerView recyclerView;
+
+    List<ModelComment> commentList;
+    AdapterComments adapterComments;
 
     EditText comment_text;
     ImageButton sendBtn;
@@ -58,12 +68,23 @@ public class ReviewActivity extends AppCompatActivity {
         ac.setDisplayShowHomeEnabled(true);
         ac.setDisplayHomeAsUpEnabled(true);
 
+        ImageView imageView = new ImageView(ac.getThemedContext());
+        imageView.setScaleType(ImageView.ScaleType.CENTER);
+        imageView.setImageResource(R.drawable.adventure_travel);
+        ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(
+                ActionBar.LayoutParams.WRAP_CONTENT,
+                ActionBar.LayoutParams.WRAP_CONTENT);
+        layoutParams.rightMargin = 40;
+        imageView.setLayoutParams(layoutParams);
+        ac.setCustomView(imageView);
+
         //Intent intent = getIntent();
         //postID = intent.getStringExtra("placeId");
         //DatabaseReference postsRef = FirebaseDatabase.getInstance().getReference().child("places");
         postID = "a950dd1d-46e3-496b-bc72-1acacc7c5482";
 
         pImage = findViewById(R.id.pImage);
+        profile_Image = findViewById(R.id.profile_Image);
         pTitle = findViewById(R.id.pTitle);
         pLikes = findViewById(R.id.pLikes);
         pComments = findViewById(R.id.pComments);
@@ -75,10 +96,16 @@ public class ReviewActivity extends AppCompatActivity {
         comment_text = findViewById(R.id.comment_txt);
         sendBtn = findViewById(R.id.send_btn);
 
+        recyclerView = findViewById(R.id.recyclerView);
+
 
         loadPostInfo(this);
-        loadUserInfo(this);
+        loadUserInfo(this,ac);
         //createLikeDatabase();
+
+
+        
+        loadComments();
 
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,6 +118,36 @@ public class ReviewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 likePost();
+            }
+        });
+    }
+
+    private void loadComments() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+
+        recyclerView.setLayoutManager(layoutManager);
+
+        commentList = new ArrayList<>();
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("placeReviews").child(postID).child("comments");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                commentList.clear();
+                for (DataSnapshot ds: dataSnapshot.getChildren()) {
+                    ModelComment modelComment = ds.getValue(ModelComment.class);
+
+                    commentList.add(modelComment);
+
+                    adapterComments = new AdapterComments(getApplicationContext(), commentList,myUid,myName);
+                    recyclerView.setAdapter(adapterComments);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
     }
@@ -206,8 +263,10 @@ public class ReviewActivity extends AppCompatActivity {
         });
     }
 
-    private void loadUserInfo(final Context context) {
+    private void loadUserInfo(final Context context, final ActionBar ac) {
+        myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Query myRef = FirebaseDatabase.getInstance().getReference("users").orderByKey().equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
         System.out.println("bbbb user");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -217,14 +276,16 @@ public class ReviewActivity extends AppCompatActivity {
                     myName = ""+ds.child("name").getValue();
                     myDP = ""+ds.child("image").getValue();
                     System.out.println("bbbb"+myName);
+                    UserDetails.username=myName;
+                    UserDetails.userImage=myDP;
 
                     try {
-                        //Picasso.with(context).load(myDP).into(pImage);
+                        Picasso.with(context).load(myDP).into(profile_Image);
                     }
                     catch (Exception e) {
 
                     }
-
+                    ac.setSubtitle("Signed in as: "+ myName);
                 }
             }
 
@@ -233,6 +294,7 @@ public class ReviewActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
     private void loadPostInfo(final Context context) {

@@ -13,6 +13,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.database.ChildEventListener;
@@ -20,6 +21,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +38,7 @@ public class Chat extends AppCompatActivity {
 
     LinearLayout layout;
     RelativeLayout layout_2;
-    ImageView sendButton;
+    ImageView sendButton, profile_Image;
     EditText messageArea;
     ScrollView scrollView;
 //    Firebase reference1, reference2;
@@ -51,7 +53,14 @@ public class Chat extends AppCompatActivity {
         sendButton = findViewById(R.id.sendButton);
         messageArea = findViewById(R.id.messageArea);
         scrollView = findViewById(R.id.scrollView);
+        profile_Image = findViewById(R.id.profile_Image);
         Log.d(TAG, "oncreate");
+
+        ActionBar ac = getSupportActionBar();
+        ac.setTitle("Chat");
+        ac.setDisplayShowHomeEnabled(true);
+        ac.setDisplayHomeAsUpEnabled(true);
+        ac.setSubtitle(UserDetails.chatWith);
 
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -70,7 +79,6 @@ public class Chat extends AppCompatActivity {
         final DatabaseReference reference1 = myRef.child(UserDetails.username + "_" + UserDetails.chatWith);
         final DatabaseReference reference2 = myRef.child(UserDetails.chatWith + "_" + UserDetails.username);
         Log.d(TAG, reference1.toString());
-
 
 
         sendButton.setOnClickListener(new View.OnClickListener() {
@@ -93,6 +101,13 @@ public class Chat extends AppCompatActivity {
                 }
             }
         });
+
+        try {
+            Picasso.with(this).load(UserDetails.userImage).into(profile_Image);
+        }
+        catch (Exception e) {
+
+        }
 
         reference1.addChildEventListener(new ChildEventListener() {
             @Override
@@ -159,9 +174,6 @@ public class Chat extends AppCompatActivity {
         layout.addView(textView);
         scrollView.fullScroll(View.FOCUS_DOWN);
     }
-
-
-
 
 
     }
