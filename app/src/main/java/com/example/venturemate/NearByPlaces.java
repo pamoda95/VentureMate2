@@ -320,7 +320,12 @@ public class NearByPlaces extends AppCompatActivity implements OnMapReadyCallbac
         }
         //Place current location marker
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+
+
+
+
         if(!naerByUserFound){
+
             getNearbyUsers(latLng);
         }
 
@@ -520,8 +525,6 @@ public class NearByPlaces extends AppCompatActivity implements OnMapReadyCallbac
         mLocationRequest.setInterval(1000);
         mLocationRequest.setFastestInterval(1000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-
-
 
 
         if (ContextCompat.checkSelfPermission(this,
