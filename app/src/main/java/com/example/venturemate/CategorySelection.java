@@ -167,6 +167,17 @@ public class CategorySelection extends AppCompatActivity implements LocationList
 //            myIntent.putExtra("longitude",UserDetails.longitude);
 //            myIntent.putExtra("latitude",UserDetails.latitude);
             CategorySelection.this.startActivity(myIntent);
+            finish();
+        }
+
+        if(id == R.id.action_nearByPlaces){
+
+            Intent myIntent = new Intent(CategorySelection.this, NearByPlaces.class);
+//            myIntent.putExtra("longitude",UserDetails.longitude);
+//            myIntent.putExtra("latitude",UserDetails.latitude);
+            CategorySelection.this.startActivity(myIntent);
+            finish();
+
         }
         return super.onOptionsItemSelected(item);
     }
