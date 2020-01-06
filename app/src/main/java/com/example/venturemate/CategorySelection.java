@@ -130,15 +130,15 @@ public class CategorySelection extends AppCompatActivity implements LocationList
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Active_users");
         GeoFire geoFire = new GeoFire(ref);
         geoFire.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
-<<<<<<< HEAD
+
         ref.child(userId).child("username").setValue(UserDetails.username);
 
 //        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users");
 //        GeoFire geoFire = new GeoFire(ref);
 //        geoFire.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
 ////        ref.child(userId).child("username").setValue("byUserID");
-=======
-        ref.child(userId).child("username").setValue(username);
+
+//        ref.child(userId).child("username").setValue(username);
 
     }
 
@@ -166,7 +166,7 @@ public class CategorySelection extends AppCompatActivity implements LocationList
 
             }
         });
->>>>>>> dc86c47b44fc3b36156cfbb82dc6326a1e57c196
+
 
     }
 
