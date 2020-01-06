@@ -143,7 +143,7 @@ public class NearByPlaces extends AppCompatActivity implements OnMapReadyCallbac
 //        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(6.798113, 79.902269), 1.5);
 
         Log.d(TAG ,"ON  getNearbyUsers(latlag) "+latLng.latitude +"   "+ latLng.longitude);
-        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(latLng.latitude, latLng.longitude), 1.5);
+        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(latLng.latitude, latLng.longitude), 5);
         Log.d(TAG ,"chschj  "+ geoQuery.toString()+"   "+ geoQuery);
         geoQuery.removeAllListeners();
 
