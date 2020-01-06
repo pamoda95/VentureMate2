@@ -109,10 +109,12 @@ public class CategorySelection extends AppCompatActivity implements LocationList
         UserDetails.longitude=latLng.longitude;
         Log.d(TAG , "onLOcation "+latLng.toString());
 
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Active_users");
         GeoFire geoFire = new GeoFire(ref);
-        geoFire.setLocation("ULLPMiPHGCd3zYqv5OjeFuKkWOE2", new GeoLocation(location.getLatitude(), location.getLongitude()));
-        ref.child("ULLPMiPHGCd3zYqv5OjeFuKkWOE2").child("username").setValue("newUser");
+        geoFire.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
+        ref.child(userId).child("username").setValue("this user");
 
     }
 

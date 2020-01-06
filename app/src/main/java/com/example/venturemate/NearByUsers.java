@@ -164,8 +164,8 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
 
 
 
-//                if (!Objects.equals(key, FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-                if (!Objects.equals(key, "wgrui23t893rph3uihnhge")) {
+                if (!Objects.equals(key, FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+//                if (!Objects.equals(key, "wgrui23t893rph3uihnhge")) {
                     nearbyUsers.add(key);
 
                 }
