@@ -66,7 +66,7 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
     private ArrayList<String> nearbyUsers;
     private ArrayList<Marker> nearbyMarkers;
     private HashMap<String, Marker> nearbyHashMap;
-    private boolean userFound = false;
+    private boolean naerByUserFound = false;
     private int counter =0;
 
     Marker mCurrLocationMarker;
@@ -151,7 +151,7 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onKeyEntered(String key, GeoLocation location) {
-                userFound = true;
+                naerByUserFound = true;
                 final String[] userName={} ;
                 Log.d(TAG , "found userssssssssssssss    "+key +" "+ location.toString());
 
@@ -320,7 +320,10 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
         }
         //Place current location marker
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        getNearbyUsers(latLng );
+        if(!naerByUserFound){
+            getNearbyUsers(latLng);
+        }
+
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
         markerOptions.title("Current Position");
