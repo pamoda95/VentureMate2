@@ -229,13 +229,14 @@ public class LocationDetailAdder extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<Uri> task) {
                     if (task.isSuccessful()) {
+
                         Uri downloadUri = task.getResult();
                         place.put("image",downloadUri.toString());
                         myRef.child(id).setValue(place);
 
-                        DatabaseReference loc_ref = myRef;
-                        GeoFire geoFire = new GeoFire(loc_ref);
-                        geoFire.setLocation(id, new GeoLocation(lat, lon));
+//                        DatabaseReference loc_ref = myRef;
+//                        GeoFire geoFire = new GeoFire(loc_ref);
+//                        geoFire.setLocation(id, new GeoLocation(lat, lon));
 
                         DatabaseReference dummy = FirebaseDatabase.getInstance().getReference("DummyPlaces");
                         GeoFire dGeoFire = new GeoFire(dummy);
