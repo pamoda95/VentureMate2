@@ -119,26 +119,21 @@ public class CategorySelection extends AppCompatActivity implements LocationList
     public void onLocationChanged(Location location) {
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 //        UserDetails.latLng = latLng;
-        UserDetails.latitude=latLng.latitude;
-        UserDetails.longitude=latLng.longitude;
+//        UserDetails.latitude=latLng.latitude;
+//        UserDetails.longitude=latLng.longitude;
         Log.d(TAG , "onLOcation "+latLng.toString());
-        System.out.println("looocation"+UserDetails.latitude);
+//        System.out.println("looocation"+UserDetails.latitude);
 
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         String username = UserDetails.username;
 
+        Log.d(TAG,"ON LOCATION CHANGE  :" + userId);
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Active_users");
         GeoFire geoFire = new GeoFire(ref);
         geoFire.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
 
         ref.child(userId).child("username").setValue(UserDetails.username);
 
-//        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users");
-//        GeoFire geoFire = new GeoFire(ref);
-//        geoFire.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
-////        ref.child(userId).child("username").setValue("byUserID");
-
-//        ref.child(userId).child("username").setValue(username);
 
     }
 
@@ -213,23 +208,29 @@ public class CategorySelection extends AppCompatActivity implements LocationList
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_logout){
+
+            String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            String username = UserDetails.username;
+
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Active_users");
+            ref.child(userId).removeValue();
+
             FirebaseAuth.getInstance().signOut();
             checkUserStatus();
+
+
         }
 
         if (id == R.id.action_nearByUsers){
             Intent myIntent = new Intent(CategorySelection.this, NearByUsers.class);
             CategorySelection.this.startActivity(myIntent);
-            finish();
         }
 
         if(id == R.id.action_nearByPlaces){
 
             Intent myIntent = new Intent(CategorySelection.this, NearByPlaces.class);
-//            myIntent.putExtra("longitude",UserDetails.longitude);
-//            myIntent.putExtra("latitude",UserDetails.latitude);
             CategorySelection.this.startActivity(myIntent);
-            finish();
+
 
         }
         return super.onOptionsItemSelected(item);
