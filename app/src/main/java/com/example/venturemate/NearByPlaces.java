@@ -129,7 +129,6 @@ public class NearByPlaces extends AppCompatActivity implements OnMapReadyCallbac
 
 
 
-
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("DummyPlaces");
 
         GeoFire geoFire = new GeoFire(ref);
