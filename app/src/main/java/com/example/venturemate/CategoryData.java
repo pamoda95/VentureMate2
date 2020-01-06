@@ -33,6 +33,7 @@ public class CategoryData extends AppCompatActivity {
 
     private  static String TAG = "dataTAG";
     ListView listView;
+    TextView error;
     final ArrayList<Place> placeList = new ArrayList<>();
     ArrayList <String> mTitle = new ArrayList<>();
     ArrayList <String> mDescription= new ArrayList<>();
@@ -49,6 +50,7 @@ public class CategoryData extends AppCompatActivity {
         setContentView(R.layout.activity_category_data);
         TextView title = findViewById(R.id.pageTitle);
         title.setText(categoryName);
+        error=findViewById(R.id.error);
 
         listView = findViewById(R.id.listView);
 
@@ -61,45 +63,52 @@ public class CategoryData extends AppCompatActivity {
 
         Query query = ref.orderByChild("category").equalTo(categoryName);
         Log.d(TAG, "query taken");
+        //System.out.println("pendingC"+query);
+        final Boolean[] dataAvailable = {false};
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
+
                     final long[] pendingLoadCount = { dataSnapshot.getChildrenCount()};
-                    for (DataSnapshot issue : dataSnapshot.getChildren()) {
-                        double latitude = issue.child("latitude").getValue(Double.class);
-                        double longitude = issue.child("longitude").getValue(Double.class);
-                        String  placeName = issue.child("placeName").getValue(String.class);
-                        String  placeId = issue.child("placeId").getValue(String.class);
-                        String  category = issue.child("category").getValue(String.class);
-                        String  description = issue.child("description").getValue(String.class);
-                        String  route = issue.child("route").getValue(String.class);
-                        String  specialNotice = issue.child("specialNotice").getValue(String.class);
-                        String  nearestTown = issue.child("nearestTown").getValue(String.class);
-                        String  difficultes = issue.child("difficultes").getValue(String.class);
-                        String image = issue.child("image").getValue(String.class);
-                        String likes = issue.child("pLikes").getValue(String.class);
-                        String comments =issue.child("pComments").getValue(String.class);
-                        Place place = new Place(placeName,placeId,category,description,latitude,longitude,route,specialNotice,nearestTown,difficultes,image,likes,comments);
-                        placeList.add(place);
-                        Log.d(TAG, "place object created");
-                        pendingLoadCount[0] = pendingLoadCount[0] - 1;
-                        if (pendingLoadCount[0] == 0) {
-                            Log.d(TAG, "no pending");
-                            for (Place item : placeList){
-                                mTitle.add(item.getPlaceName());
-                                mDescription.add(item.getNearestTown());
-                                mlikes.add(item.getLikes());
-                                images.add(item.getImage());
+                    System.out.println("pendingC"+pendingLoadCount[0]);
+                        for (DataSnapshot issue : dataSnapshot.getChildren()) {
+                            double latitude = issue.child("latitude").getValue(Double.class);
+                            double longitude = issue.child("longitude").getValue(Double.class);
+                            String  placeName = issue.child("placeName").getValue(String.class);
+                            String  placeId = issue.child("placeId").getValue(String.class);
+                            String  category = issue.child("category").getValue(String.class);
+                            String  description = issue.child("description").getValue(String.class);
+                            String  route = issue.child("route").getValue(String.class);
+                            String  specialNotice = issue.child("specialNotice").getValue(String.class);
+                            String  nearestTown = issue.child("nearestTown").getValue(String.class);
+                            String  difficultes = issue.child("difficultes").getValue(String.class);
+                            String image = issue.child("image").getValue(String.class);
+                            String likes = issue.child("pLikes").getValue(String.class);
+                            String comments =issue.child("pComments").getValue(String.class);
+                            Place place = new Place(placeName,placeId,category,description,latitude,longitude,route,specialNotice,nearestTown,difficultes,image,likes,comments);
+                            placeList.add(place);
+                            Log.d(TAG, "place object created");
+                            pendingLoadCount[0] = pendingLoadCount[0] - 1;
+                            if (pendingLoadCount[0] == 0) {
+                                Log.d(TAG, "no pending");
+                                for (Place item : placeList){
+                                    mTitle.add(item.getPlaceName());
+                                    mDescription.add(item.getNearestTown());
+                                    mlikes.add(item.getLikes());
+                                    images.add(item.getImage());
+                                }
+                                Log.d(TAG, "data retrieved");
+                                MyAdapter adapter = new MyAdapter(CategoryData.this, mTitle, mDescription, images, mlikes);
+                                listView.setAdapter(adapter);
+                                progressDialog.dismiss();
                             }
-                            Log.d(TAG, "data retrieved");
-                            MyAdapter adapter = new MyAdapter(CategoryData.this, mTitle, mDescription, images, mlikes);
-                            listView.setAdapter(adapter);
-                            progressDialog.dismiss();
+                            dataAvailable[0] =true;
                         }
-                    }
+
 
                 }
+
             }
 
             @Override
@@ -109,6 +118,11 @@ public class CategoryData extends AppCompatActivity {
             }
 
         });
+
+        if(!dataAvailable[0]){
+            progressDialog.dismiss();
+            error.setText("No results available");
+        }
 
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
