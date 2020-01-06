@@ -34,19 +34,15 @@
             android:typeface="sans"
             app:fontFamily="casual" />
 
-        <Button
+        <ImageButton
             android:id="@+id/add_button"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:background="@drawable/btn_shape_capsule"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
+            android:background="@null"
+            android:layout_width="50dp"
+            android:layout_height="52dp"
+            android:scaleType="fitXY"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="5dp"
             android:layout_marginRight="10dp"
-            android:foregroundGravity="center"
-            android:padding="8dp"
-            android:gravity="center"
-            android:text="New"
+            android:src="@drawable/ic_add_place_foreground"
             />
 
     </RelativeLayout>

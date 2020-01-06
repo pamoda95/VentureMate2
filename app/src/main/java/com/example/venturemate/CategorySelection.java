@@ -36,13 +36,14 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class CategorySelection extends AppCompatActivity implements LocationListener {
 
     GridView gridView;
-    Button addNewLocationButton;
+    ImageButton addNewLocationButton;
     LocationManager locationManager;
     private  static String TAG = "locationTAG";
 
