@@ -45,7 +45,7 @@ public class CategorySelection extends AppCompatActivity implements LocationList
     Button addNewLocationButton;
     LocationManager locationManager;
     LatLng myLocation;
-    private  static String TAG = "locationTAG";
+    private  static String TAG = "AAATAG";
 
 
     static final String[] CATEGORIES = new String[] {
@@ -104,12 +104,15 @@ public class CategorySelection extends AppCompatActivity implements LocationList
     @Override
     public void onLocationChanged(Location location) {
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        UserDetails.latLng = latLng;
+//        UserDetails.latLng = latLng;
+        UserDetails.latitude=latLng.latitude;
+        UserDetails.longitude=latLng.longitude;
+        Log.d(TAG , "onLOcation "+latLng.toString());
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Active_users");
         GeoFire geoFire = new GeoFire(ref);
         geoFire.setLocation("ULLPMiPHGCd3zYqv5OjeFuKkWOE2", new GeoLocation(location.getLatitude(), location.getLongitude()));
-        ref.child("ULLPMiPHGCd3zYqv5OjeFuKkWOE2").child("username").setValue("ksdnsdj");
+        ref.child("ULLPMiPHGCd3zYqv5OjeFuKkWOE2").child("username").setValue("newUser");
 
     }
 
@@ -159,8 +162,8 @@ public class CategorySelection extends AppCompatActivity implements LocationList
 
         if (id == R.id.action_nearByUsers){
             Intent myIntent = new Intent(CategorySelection.this, NearByUsers.class);
-            myIntent.putExtra("longitude",UserDetails.latLng.longitude);
-            myIntent.putExtra("latitude",UserDetails.latLng.latitude);
+//            myIntent.putExtra("longitude",UserDetails.longitude);
+//            myIntent.putExtra("latitude",UserDetails.latitude);
             CategorySelection.this.startActivity(myIntent);
         }
         return super.onOptionsItemSelected(item);

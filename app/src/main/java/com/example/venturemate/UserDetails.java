@@ -10,5 +10,7 @@ public class UserDetails {
     static String uid = "";
     static String userImage="";
     static String chatWithImage = "";
-    static LatLng latLng = new LatLng(0.0,0.0);
+//    static LatLng latLng = new LatLng(0.0,0.0);
+    static Double latitude = 0.0;
+    static Double longitude =0.0;
 }

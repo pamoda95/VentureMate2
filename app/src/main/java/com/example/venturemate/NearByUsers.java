@@ -83,6 +83,7 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nearby_users);
         context=this;
+        Log.d(TAG , "user  latitude  "+ UserDetails.latitude);
 
 //        currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 //        currentUserID = ;
@@ -106,7 +107,7 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
 
 
 
-    private void getNearbyUsers() {
+    private void getNearbyUsers(LatLng latLng) {
         Log.d(TAG, "getNearbyUsers");
 
 
@@ -139,7 +140,9 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
 //                                mLastLocation.getLatitude(), mLastLocation.getLongitude()),10000);
 
 
-        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(6.798113, 79.902269), 1.5);
+//        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(6.798113, 79.902269), 1.5);
+        Log.d(TAG ,"ON  getNearbyUsers(latlag) "+latLng.latitude +"   "+ latLng.longitude);
+        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(latLng.latitude, latLng.longitude), 1.5);
         Log.d(TAG ,"chschj  "+ geoQuery.toString()+"   "+ geoQuery);
         geoQuery.removeAllListeners();
 
@@ -317,6 +320,7 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
         }
         //Place current location marker
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        getNearbyUsers(latLng );
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
         markerOptions.title("Current Position");
@@ -495,7 +499,7 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
         mMap.setMyLocationEnabled(true);
         mMap.setOnMarkerClickListener(this);
 
-        getNearbyUsers();
+//        getNearbyUsers();
 
 
 //        markNearbyUsers();
