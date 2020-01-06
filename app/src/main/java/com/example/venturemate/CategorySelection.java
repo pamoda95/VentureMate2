@@ -115,7 +115,12 @@ public class CategorySelection extends AppCompatActivity implements LocationList
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Active_users");
         GeoFire geoFire = new GeoFire(ref);
         geoFire.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
-        ref.child(userId).child("username").setValue("this user");
+        ref.child(userId).child("username").setValue(UserDetails.username);
+
+//        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users");
+//        GeoFire geoFire = new GeoFire(ref);
+//        geoFire.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
+////        ref.child(userId).child("username").setValue("byUserID");
 
     }
 
