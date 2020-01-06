@@ -36,6 +36,7 @@ public class CategoryData extends AppCompatActivity {
     final ArrayList<Place> placeList = new ArrayList<>();
     ArrayList <String> mTitle = new ArrayList<>();
     ArrayList <String> mDescription= new ArrayList<>();
+    ArrayList <String> mlikes= new ArrayList<>();
     ArrayList <String> images= new ArrayList<>();
     String categoryName;
 
@@ -87,11 +88,12 @@ public class CategoryData extends AppCompatActivity {
                             Log.d(TAG, "no pending");
                             for (Place item : placeList){
                                 mTitle.add(item.getPlaceName());
-                                mDescription.add(item.getDescription());
+                                mDescription.add(item.getNearestTown());
+                                mlikes.add(item.getLikes());
                                 images.add(item.getImage());
                             }
                             Log.d(TAG, "data retrieved");
-                            MyAdapter adapter = new MyAdapter(CategoryData.this, mTitle, mDescription, images);
+                            MyAdapter adapter = new MyAdapter(CategoryData.this, mTitle, mDescription, images, mlikes);
                             listView.setAdapter(adapter);
                             progressDialog.dismiss();
                         }
@@ -126,13 +128,15 @@ public class CategoryData extends AppCompatActivity {
         ArrayList <String> rTitle;
         ArrayList <String> rDescription;
         ArrayList <String> rImgs;
+        ArrayList <String> rLikes;
 
-        MyAdapter (Context c, ArrayList <String> title, ArrayList <String>  description, ArrayList <String> imgs) {
+        MyAdapter (Context c, ArrayList <String> title, ArrayList <String>  description, ArrayList <String> imgs, ArrayList <String> likes) {
             super(c, R.layout.activity_row, R.id.textView1, title);
             this.context = c;
             this.rTitle = title;
             this.rDescription = description;
             this.rImgs = imgs;
+            this.rLikes =likes;
 
         }
 
@@ -145,9 +149,11 @@ public class CategoryData extends AppCompatActivity {
             ImageView images = row.findViewById(R.id.image);
             TextView myTitle = row.findViewById(R.id.textView1);
             TextView myDescription = row.findViewById(R.id.textView2);
+            TextView likes = row.findViewById(R.id.likes);
 
             myTitle.setText(rTitle.get(position));
             myDescription.setText(rDescription.get(position));
+            likes.setText(rLikes.get(position));
             String imageIndex = rImgs.get(position);
             Glide.with(CategoryData.this).load(imageIndex).into(images);
 

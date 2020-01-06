@@ -345,26 +345,28 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <Button
+                    <ImageButton
                         android:id="@+id/camera_button"
                         style="@style/Widget.AppCompat.Button.Borderless"
                         android:layout_width="80dp"
                         android:layout_height="40dp"
+                        android:src="@drawable/ic_camera_foreground"
                         android:layout_marginTop="20dp"
-                        android:background="@drawable/btn_shape_capsule"
+                        android:background="@null"
                         android:gravity="center"
                         android:padding="8dp"
                         android:text="Camera" />
 
-                    <Button
+                    <ImageButton
                         android:id="@+id/gallery_button"
                         style="@style/Widget.AppCompat.Button.Borderless"
                         android:layout_width="80dp"
                         android:layout_height="40dp"
                         android:layout_marginTop="20dp"
-                        android:background="@drawable/btn_shape_capsule"
+                        android:background="@null"
                         android:gravity="center"
                         android:padding="8dp"
+                        android:src="@drawable/ic_gallery_foreground"
                         android:text="Gallery" />
                 </LinearLayout>
 

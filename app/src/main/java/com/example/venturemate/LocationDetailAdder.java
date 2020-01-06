@@ -10,6 +10,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,12 +28,14 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -45,6 +48,7 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -59,8 +63,9 @@ public class LocationDetailAdder extends AppCompatActivity {
 
     ImageView imageView ;
     Spinner spin_cat,spin_cit;
-    Button camera_button,gallery_button, detail_adding_cancel_button,submit_button;
+    Button detail_adding_cancel_button,submit_button;
     EditText special_notice_text,routeText,difficultiesText,locationDescriptionText,placeNameText;
+    ImageButton camera_button,gallery_button;
 
     DatabaseReference myRef;
     Uri selectedImage;
@@ -110,7 +115,7 @@ public class LocationDetailAdder extends AppCompatActivity {
         citiesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spin_cit.setAdapter(citiesAdapter);
 
-        camera_button = (Button) findViewById(R.id.camera_button);
+        camera_button = (ImageButton) findViewById(R.id.camera_button);
         camera_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -118,7 +123,7 @@ public class LocationDetailAdder extends AppCompatActivity {
             }
         });
 
-        gallery_button = (Button) findViewById(R.id.gallery_button);
+        gallery_button = (ImageButton) findViewById(R.id.gallery_button);
         gallery_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent pickPhoto = new Intent(Intent.ACTION_PICK,
@@ -155,27 +160,24 @@ public class LocationDetailAdder extends AppCompatActivity {
                     Bitmap imageBitmap = (Bitmap) extras.get("data");
                     imageView.setImageBitmap(imageBitmap);
 
-                    String p =getImageUri(LocationDetailAdder.this,imageBitmap);
-                    Toast.makeText(LocationDetailAdder.this, p , Toast.LENGTH_SHORT).show();
-                    selectedImage =Uri.parse(p);
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    imageBitmap.compress(Bitmap.CompressFormat.JPEG,100,baos);
+                    String path = MediaStore.Images.Media.insertImage(getContentResolver(),imageBitmap,"title",null);
+                   selectedImage= Uri.parse(path);
 
                 }
+                break;
             }
             case 1: {
                     if (resultCode == RESULT_OK) {
                         selectedImage = data.getData();
                         imageView.setImageURI(selectedImage);
                     }
+                    break;
                 }
             }
         }
 
-    public String getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return path;
-    }
 
         public void onSubmitButtonClicked (){
             uploadData();
@@ -198,8 +200,8 @@ public class LocationDetailAdder extends AppCompatActivity {
             place.put("difficultes", difficultiesText.getText().toString());
             place.put("pLikes", "0");
             place.put("pComments", "0");
-            place.put("latitude", lat);
-            place.put("longitude", lon);
+            place.put("latitude",lat);
+            place.put("longitude",lon);
 
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Uploading...");
@@ -230,6 +232,17 @@ public class LocationDetailAdder extends AppCompatActivity {
                         Uri downloadUri = task.getResult();
                         place.put("image",downloadUri.toString());
                         myRef.child(id).setValue(place);
+
+                        DatabaseReference loc_ref = myRef.child(id);
+                        GeoFire geoFire = new GeoFire(loc_ref);
+                        geoFire.setLocation("coordintes", new GeoLocation(lat, lon));
+
+                        DatabaseReference dummy = FirebaseDatabase.getInstance().getReference("DummyPlaces").child(id);
+                        GeoFire dGeoFire = new GeoFire(dummy);
+                        dGeoFire.setLocation("coordintes", new GeoLocation(lat, lon));
+                        dummy.child("place_name").setValue(placeNameText.getText().toString());
+
+
                         progressDialog.dismiss();
                         Toast.makeText(LocationDetailAdder.this, "Upload Successful", Toast.LENGTH_SHORT).show();
                         Intent myIntent = new Intent(LocationDetailAdder.this, CategorySelection.class);

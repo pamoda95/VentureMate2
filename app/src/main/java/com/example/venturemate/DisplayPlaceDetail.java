@@ -59,7 +59,10 @@ public class DisplayPlaceDetail extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent myIntent = new Intent(DisplayPlaceDetail.this, CategorySelection.class);
+                Intent myIntent = new Intent(DisplayPlaceDetail.this, MapsActivity.class);
+                myIntent.putExtra("Place_name",place.getPlaceName());
+                myIntent.putExtra("latitude",place.getLatitude());
+                myIntent.putExtra("longitde",place.getLongitude());
                 DisplayPlaceDetail.this.startActivity(myIntent);
             }
         });
