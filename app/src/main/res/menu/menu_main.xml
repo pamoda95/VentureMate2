@@ -11,6 +11,12 @@
     <item
         android:id="@+id/action_nearByUsers"
         android:orderInCategory="100"
-        android:title="Logout"
+        android:title="Near By Users"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_nearByPlaces"
+        android:orderInCategory="100"
+        android:title="Near By Places"
+        app:showAsAction="never" />
+
 </menu>

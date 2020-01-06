@@ -9,8 +9,6 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -46,12 +44,14 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
-public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback,
+//public class NearByPlaces {
+//}
+
+
+public class NearByPlaces extends AppCompatActivity implements OnMapReadyCallback,
         LocationListener, GoogleMap.OnMarkerClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
 
@@ -81,7 +81,7 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_nearby_users);
+        setContentView(R.layout.activity_nearby_places);
         context=this;
         Log.d(TAG , "user  latitude  "+ UserDetails.latitude);
 
@@ -130,7 +130,7 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
 
 
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Active_users");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("DummyPlaces");
 
         GeoFire geoFire = new GeoFire(ref);
 //        Log.d(TAG , mLastLocation.toString());
@@ -141,6 +141,7 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
 
 
 //        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(6.798113, 79.902269), 1.5);
+
         Log.d(TAG ,"ON  getNearbyUsers(latlag) "+latLng.latitude +"   "+ latLng.longitude);
         GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(latLng.latitude, latLng.longitude), 1.5);
         Log.d(TAG ,"chschj  "+ geoQuery.toString()+"   "+ geoQuery);
@@ -234,21 +235,21 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
         String options[] = {"Chat with "+name};
 
 
-        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(context);
-
-
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                if (i==0) {
-                    UserDetails.chatWith = name;
-                    Intent intent = new Intent(context, Chat.class);
-                    context.startActivity(intent);
-                }
-            }
-        });
-
-        builder.create().show();
+//        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(context);
+//
+//
+//        builder.setItems(options, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                if (i==0) {
+//                    UserDetails.chatWith = name;
+//                    Intent intent = new Intent(context, Chat.class);
+//                    context.startActivity(intent);
+//                }
+//            }
+//        });
+//
+//        builder.create().show();
 
 
 
@@ -416,7 +417,7 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
             final ArrayList<String> userNmae = new ArrayList<String>();
 
             DatabaseReference userNameRef = FirebaseDatabase.getInstance().getReference().
-                    child("Active_users").child(String.valueOf(nearbyUsers.get(i))).child("username");
+                    child("DummyPlaces").child(String.valueOf(nearbyUsers.get(i))).child("place_name");
             userNameRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -434,8 +435,8 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
             });
 
             DatabaseReference userLocationRef = FirebaseDatabase.getInstance().getReference().
-                    child("Active_users").child(String.valueOf(nearbyUsers.get(i))).child("l");
-            Log.d(TAG, "userLocationRef   ####  " + userLocationRef);
+                    child("DummyPlaces").child(String.valueOf(nearbyUsers.get(i))).child("l");
+            Log.d(TAG, "userLocationRef     " + userLocationRef);
             userLocationRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -463,10 +464,11 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
 
 
                         Marker m = mMap.addMarker(new MarkerOptions().
-                            position(otherUserLocation).
-                                        icon(BitmapDescriptorFactory.fromResource(R.drawable.newmarkeruser2)).
+                                position(otherUserLocation).
+                                icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)).
+//                                icon(BitmapDescriptorFactory.fromResource(R.drawable.newmarker6)).
                                 title(userNmae.get(0)));
-//                                icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)).
+
 
                         m.setTag("set TAg");
                         m.showInfoWindow();

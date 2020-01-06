@@ -99,8 +99,14 @@
         </activity>
         <activity android:name=".RegisterActivity" />
         <activity android:name=".LoginActivity" />
+<<<<<<< HEAD
+        <activity android:name=".Chat"></activity>
+        <activity android:name=".NearByUsers"></activity>
+        <activity android:name=".NearByPlaces"></activity>
+=======
         <activity android:name=".Chat" />
         <activity android:name=".NearByUsers" />
+>>>>>>> b55b1fd7bab47b3ba08be4f37d66cb016f178dc6
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
