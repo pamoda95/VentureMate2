@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -39,6 +40,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -194,12 +196,12 @@ public class RegisterActivity extends AppCompatActivity {
         values.put(MediaStore.Images.Media.TITLE, "Temp Pic");
         values.put(MediaStore.Images.Media.DESCRIPTION, "Temp Description");
 
-        image_uri = this.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        //image_uri = this.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
 
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,image_uri);
-        Picasso.with(this).load(image_uri).into(pImage);
+        //cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,image_uri);
+        //Picasso.with(this).load(image_uri).into(pImage);
         startActivityForResult(cameraIntent,IMAGE_PICK_CAMERA_CODE);
     }
 
@@ -210,9 +212,22 @@ public class RegisterActivity extends AppCompatActivity {
                 image_uri = data.getData();
                 Picasso.with(this).load(image_uri).into(pImage);
                 //uploadProfilePhoto(image_uri);
+            } else if (requestCode == IMAGE_PICK_CAMERA_CODE) {
+                Bundle extras = data.getExtras();
+                Bitmap imageBitmap = (Bitmap) extras.get("data");
+                pImage.setImageBitmap(imageBitmap);
+
+                image_uri=getImageUri(RegisterActivity.this,imageBitmap);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
     }
 
     private void uploadProfilePhoto(final String dbemail, final String dbpassword, final String dbname, Uri image_uri) {

@@ -20,10 +20,16 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -57,6 +63,11 @@ public class CategorySelection extends AppCompatActivity implements LocationList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_selection);
 
+        ActionBar ac = getSupportActionBar();
+        ac.setTitle("Venture Mate");
+        ac.setDisplayShowHomeEnabled(true);
+        ac.setDisplayHomeAsUpEnabled(true);
+
         addNewLocationButton = findViewById(R.id.add_button);
         addNewLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +93,9 @@ public class CategorySelection extends AppCompatActivity implements LocationList
 
             }
         });
+
+
+
     }
 
 
@@ -96,7 +110,6 @@ public class CategorySelection extends AppCompatActivity implements LocationList
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
 
         }
-
         checkUserStatus();
 
 
@@ -109,18 +122,51 @@ public class CategorySelection extends AppCompatActivity implements LocationList
         UserDetails.latitude=latLng.latitude;
         UserDetails.longitude=latLng.longitude;
         Log.d(TAG , "onLOcation "+latLng.toString());
+        System.out.println("looocation"+UserDetails.latitude);
 
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String username = UserDetails.username;
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Active_users");
         GeoFire geoFire = new GeoFire(ref);
         geoFire.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
+<<<<<<< HEAD
         ref.child(userId).child("username").setValue(UserDetails.username);
 
 //        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users");
 //        GeoFire geoFire = new GeoFire(ref);
 //        geoFire.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
 ////        ref.child(userId).child("username").setValue("byUserID");
+=======
+        ref.child(userId).child("username").setValue(username);
+
+    }
+
+    private void loadUserInfo() {
+        final String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Query myRef = FirebaseDatabase.getInstance().getReference("users").orderByKey().equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+        System.out.println("bbbb user");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                System.out.println("bbbb user");
+                for (DataSnapshot ds: dataSnapshot.getChildren()) {
+                    String myName = ""+ds.child("name").getValue();
+                    String myDP = ""+ds.child("image").getValue();
+                    System.out.println("bbbb"+myName);
+                    UserDetails.username=myName;
+                    UserDetails.userImage=myDP;
+                    UserDetails.uid=myUid;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+>>>>>>> dc86c47b44fc3b36156cfbb82dc6326a1e57c196
 
     }
 
@@ -144,7 +190,10 @@ public class CategorySelection extends AppCompatActivity implements LocationList
 
         if (user != null) {
             // if user signed in stay here
+            loadUserInfo();
             System.out.println("ssss");
+
+
         }else {
             startActivity(new Intent(CategorySelection.this,MainActivity.class));
             finish();
@@ -170,8 +219,6 @@ public class CategorySelection extends AppCompatActivity implements LocationList
 
         if (id == R.id.action_nearByUsers){
             Intent myIntent = new Intent(CategorySelection.this, NearByUsers.class);
-//            myIntent.putExtra("longitude",UserDetails.longitude);
-//            myIntent.putExtra("latitude",UserDetails.latitude);
             CategorySelection.this.startActivity(myIntent);
             finish();
         }

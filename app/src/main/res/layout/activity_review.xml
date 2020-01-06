@@ -148,14 +148,15 @@
         android:id="@+id/commentLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:background="@color/lightGrey">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profile_Image"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/profile"
-            app:civ_border_width="2dp"
+            app:civ_border_width="0dp"
             app:civ_border_color="#FF000000"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp" />
@@ -165,14 +166,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="1dp"
-            android:background="@color/colorWhite"
+            android:background="@color/lightGrey"
             android:padding="10dp"
             android:hint="Enter comment..."
             android:inputType="textCapSentences|textMultiLine"
             android:layout_centerVertical="true"
             android:layout_marginTop="1dp"
             android:layout_marginBottom="1dp"
-            android:layout_toRightOf="@+id/profile_Image"/>
+            android:layout_toRightOf="@+id/profile_Image" />
 
         <ImageButton
             android:id="@+id/send_btn"
