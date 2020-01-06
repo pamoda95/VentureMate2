@@ -11,6 +11,7 @@ import com.ahmadrosid.lib.drawroutemap.DrawRouteMaps;
 import com.firebase.geofire.GeoFire;
 import com.google.android.gms.location.LocationListener;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -18,6 +19,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -53,15 +55,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        /*mMap.setMyLocationEnabled(true);
+        mMap.setMyLocationEnabled(true);
         CameraUpdate zoom=CameraUpdateFactory.zoomTo(15);
         LatLng place = new LatLng(place_latitude, place_longitude);
         mMap.addMarker(new MarkerOptions().position(place).title(place_name));
 
         mMap.moveCamera(CameraUpdateFactory.newLatLng(place));
-        mMap.animateCamera(zoom);*/
+        mMap.animateCamera(zoom);
 
-        LatLng origin = new LatLng(current_latitude, current_longitude);
+        /*LatLng origin = new LatLng(current_latitude, current_longitude);
         LatLng destination = new LatLng(place_latitude, place_longitude);
         DrawRouteMaps.getInstance(this)
                 .draw(origin, destination, mMap);
@@ -73,7 +75,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .include(destination).build();
         Point displaySize = new Point();
         getWindowManager().getDefaultDisplay().getSize(displaySize);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, displaySize.x, 250, 30));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, displaySize.x, 250, 30));*/
 
 
     }

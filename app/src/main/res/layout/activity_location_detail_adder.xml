@@ -348,8 +348,8 @@
                     <ImageButton
                         android:id="@+id/camera_button"
                         style="@style/Widget.AppCompat.Button.Borderless"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
                         android:src="@drawable/camera"
                         android:scaleType="fitXY"
                         android:layout_marginTop="20dp"
@@ -361,8 +361,8 @@
                     <ImageButton
                         android:id="@+id/gallery_button"
                         style="@style/Widget.AppCompat.Button.Borderless"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
                         android:layout_marginTop="20dp"
                         android:scaleType="fitXY"
                         android:background="@null"

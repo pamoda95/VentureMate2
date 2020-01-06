@@ -150,6 +150,9 @@ public class CategoryData extends AppCompatActivity {
             TextView myTitle = row.findViewById(R.id.textView1);
             TextView myDescription = row.findViewById(R.id.textView2);
             TextView likes = row.findViewById(R.id.likes);
+            ImageView map = row.findViewById(R.id.map);
+
+
 
             myTitle.setText(rTitle.get(position));
             myDescription.setText(rDescription.get(position));
