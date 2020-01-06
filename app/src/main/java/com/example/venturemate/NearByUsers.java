@@ -68,6 +68,7 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
     private HashMap<String, Marker> nearbyHashMap;
     private boolean naerByUserFound = false;
     private int counter =0;
+    double lat,lon;
 
     Marker mCurrLocationMarker;
 
@@ -82,6 +83,9 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nearby_users);
+
+        Intent intent = getIntent();
+
         context=this;
         Log.d(TAG , "user  latitude  "+ UserDetails.latitude);
 

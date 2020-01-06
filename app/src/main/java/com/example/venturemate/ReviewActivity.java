@@ -100,10 +100,20 @@ public class ReviewActivity extends AppCompatActivity {
 
 
         loadPostInfo(this);
-        loadUserInfo(this,ac);
+        //loadUserInfo(this,ac);
         //createLikeDatabase();
 
 
+        myName=UserDetails.username;
+        myUid=UserDetails.uid;
+        myDP=UserDetails.userImage;
+
+        try {
+            Picasso.with(this).load(myDP).into(profile_Image);
+        }
+        catch (Exception e) {
+
+        }
         
         loadComments();
 

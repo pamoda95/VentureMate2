@@ -7,12 +7,62 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <ImageView
+    <TextView
+        android:id="@+id/ventureMate"
+        style="@style/Widget.AppCompat.TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/aclonica"
+        android:text="Venture Mate"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="#009688"
+        android:textStyle="bold"
+        />
+
+
+    <!--<ImageView
         android:layout_width="371dp"
         android:layout_height="388dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:src="@drawable/adventure_travel" />
+        android:src="@drawable/adventure_travel" />-->
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_Image"
+        android:layout_width="371dp"
+        android:layout_height="388dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:layout_marginRight="5dp"
+        android:src="@drawable/main"
+        android:paddingBottom="150dp"
+        app:civ_border_width="2dp"
+        app:civ_border_color="#009688"/>
+
+    <View
+        android:layout_above="@id/ventureMateDes"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp" />
+
+    <TextView
+        android:id="@+id/ventureMateDes"
+        style="@style/Widget.AppCompat.TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/register_btn"
+        android:fontFamily="@font/aclonica"
+        android:text="Explore More Adventures"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:paddingBottom="15dp"
+        />
 
     <Button
         android:id="@+id/register_btn"
@@ -20,15 +70,27 @@
         style="@style/Base.Widget.AppCompat.Button.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/login_btn"/>
+        android:layout_above="@id/login_btn"
+        android:drawableLeft="@drawable/register_ic"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:textAlignment="center"
+        android:fontFamily="@font/aclonica" />
 
     <Button
         android:id="@+id/login_btn"
-        android:text="Login"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="100dp"
         style="@style/Base.Widget.AppCompat.Button.Colored"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginBottom="40dp"
+        android:drawableLeft="@drawable/ic_alogin"
+        android:fontFamily="@font/aclonica"
+        android:text="Login" />
 
 </RelativeLayout>
