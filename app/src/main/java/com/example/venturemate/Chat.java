@@ -26,12 +26,7 @@ import com.squareup.picasso.Picasso;
 import java.util.HashMap;
 import java.util.Map;
 
-//import com.firebase.client.Firebase;
 
-
-//import com.firebase.client.ChildEventListener;
-//import com.firebase.client.DataSnapshot;
-//import com.firebase.client.FirebaseError;
 
 public class Chat extends AppCompatActivity {
     private  static String TAG = "chatTAG";
@@ -41,7 +36,7 @@ public class Chat extends AppCompatActivity {
     ImageView sendButton, profile_Image;
     EditText messageArea;
     ScrollView scrollView;
-//    Firebase reference1, reference2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -163,7 +158,11 @@ public class Chat extends AppCompatActivity {
         scrollView.fullScroll(View.FOCUS_DOWN);
     }
 
-
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
+    }
     }
 
 

@@ -51,8 +51,6 @@ public class CategorySelection extends AppCompatActivity implements LocationList
     GridView gridView;
     ImageButton addNewLocationButton;
     LocationManager locationManager;
-    double currentLatitude;
-    double currentLongitde;
     LatLng myLocation;
     private  static String TAG = "AAATAG";
 
@@ -121,14 +119,8 @@ public class CategorySelection extends AppCompatActivity implements LocationList
     public void onLocationChanged(Location location) {
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
-        currentLatitude=location.getLatitude();
-        currentLongitde=location.getLongitude();
-
-//        UserDetails.latLng = latLng;
-//        UserDetails.latitude=latLng.latitude;
-//        UserDetails.longitude=latLng.longitude;
         Log.d(TAG , "onLOcation "+latLng.toString());
-//        System.out.println("looocation"+UserDetails.latitude);
+
 
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         String username = UserDetails.username;
