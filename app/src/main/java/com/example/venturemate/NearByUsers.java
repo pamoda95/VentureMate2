@@ -66,7 +66,7 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
     private ArrayList<String> nearbyUsers;
     private ArrayList<Marker> nearbyMarkers;
     private HashMap<String, Marker> nearbyHashMap;
-    private boolean userFound = false;
+    private boolean naerByUserFound = false;
     private int counter =0;
 
     Marker mCurrLocationMarker;
@@ -83,6 +83,7 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nearby_users);
         context=this;
+        Log.d(TAG , "user  latitude  "+ UserDetails.latitude);
 
 //        currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 //        currentUserID = ;
@@ -106,7 +107,7 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
 
 
 
-    private void getNearbyUsers() {
+    private void getNearbyUsers(LatLng latLng) {
         Log.d(TAG, "getNearbyUsers");
 
 
@@ -139,7 +140,9 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
 //                                mLastLocation.getLatitude(), mLastLocation.getLongitude()),10000);
 
 
-        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(6.798113, 79.902269), 1.5);
+//        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(6.798113, 79.902269), 1.5);
+        Log.d(TAG ,"ON  getNearbyUsers(latlag) "+latLng.latitude +"   "+ latLng.longitude);
+        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(latLng.latitude, latLng.longitude), 1.5);
         Log.d(TAG ,"chschj  "+ geoQuery.toString()+"   "+ geoQuery);
         geoQuery.removeAllListeners();
 
@@ -148,7 +151,7 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onKeyEntered(String key, GeoLocation location) {
-                userFound = true;
+                naerByUserFound = true;
                 final String[] userName={} ;
                 Log.d(TAG , "found userssssssssssssss    "+key +" "+ location.toString());
 
@@ -161,8 +164,8 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
 
 
 
-//                if (!Objects.equals(key, FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-                if (!Objects.equals(key, "wgrui23t893rph3uihnhge")) {
+                if (!Objects.equals(key, FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+//                if (!Objects.equals(key, "wgrui23t893rph3uihnhge")) {
                     nearbyUsers.add(key);
 
                 }
@@ -317,6 +320,10 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
         }
         //Place current location marker
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        if(!naerByUserFound){
+            getNearbyUsers(latLng);
+        }
+
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
         markerOptions.title("Current Position");
@@ -457,9 +464,12 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
 
                         Marker m = mMap.addMarker(new MarkerOptions().
                             position(otherUserLocation).
-                                icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)).
+                                        icon(BitmapDescriptorFactory.fromResource(R.drawable.newmarker6)).
                                 title(userNmae.get(0)));
+//                                icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)).
+
                         m.setTag("set TAg");
+                        m.showInfoWindow();
                         nearbyMarkers.add(m);
 
 
@@ -492,7 +502,7 @@ public class NearByUsers extends AppCompatActivity implements OnMapReadyCallback
         mMap.setMyLocationEnabled(true);
         mMap.setOnMarkerClickListener(this);
 
-        getNearbyUsers();
+//        getNearbyUsers();
 
 
 //        markNearbyUsers();

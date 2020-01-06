@@ -45,7 +45,8 @@ public class CategorySelection extends AppCompatActivity implements LocationList
     GridView gridView;
     ImageButton addNewLocationButton;
     LocationManager locationManager;
-    private  static String TAG = "locationTAG";
+    LatLng myLocation;
+    private  static String TAG = "AAATAG";
 
 
     static final String[] CATEGORIES = new String[] {
@@ -104,11 +105,17 @@ public class CategorySelection extends AppCompatActivity implements LocationList
     @Override
     public void onLocationChanged(Location location) {
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+//        UserDetails.latLng = latLng;
+        UserDetails.latitude=latLng.latitude;
+        UserDetails.longitude=latLng.longitude;
+        Log.d(TAG , "onLOcation "+latLng.toString());
+
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Active_users");
         GeoFire geoFire = new GeoFire(ref);
-        geoFire.setLocation("ULLPMiPHGCd3zYqv5OjeFuKkWOE2", new GeoLocation(location.getLatitude(), location.getLongitude()));
-        ref.child("ULLPMiPHGCd3zYqv5OjeFuKkWOE2").child("username").setValue("ksdnsdj");
+        geoFire.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
+        ref.child(userId).child("username").setValue("this user");
 
     }
 
@@ -154,6 +161,13 @@ public class CategorySelection extends AppCompatActivity implements LocationList
         if (id == R.id.action_logout){
             FirebaseAuth.getInstance().signOut();
             checkUserStatus();
+        }
+
+        if (id == R.id.action_nearByUsers){
+            Intent myIntent = new Intent(CategorySelection.this, NearByUsers.class);
+//            myIntent.putExtra("longitude",UserDetails.longitude);
+//            myIntent.putExtra("latitude",UserDetails.latitude);
+            CategorySelection.this.startActivity(myIntent);
         }
         return super.onOptionsItemSelected(item);
     }
