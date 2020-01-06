@@ -43,5 +43,20 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:19.1.0'
     implementation 'com.google.firebase:firebase-auth:19.2.0'
     implementation 'com.github.bumptech.glide:glide:4.8.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+
+    implementation ('com.github.ar-android:DrawRouteMaps:1.0.0'){
+
+            exclude group: 'com.google.firebase'
+            exclude group: 'com.google.android.gms'
+
+    }
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+
+}
+
+allprojects {
+    repositories {
+        maven { url "https://jitpack.io" }
+    }
 }

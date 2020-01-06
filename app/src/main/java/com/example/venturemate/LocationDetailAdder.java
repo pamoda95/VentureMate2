@@ -185,7 +185,12 @@ public class LocationDetailAdder extends AppCompatActivity {
 
     private void uploadData() {
 
-        if(selectedImage != null)
+        if(selectedImage != null && placeNameText.getText().toString().equals( "")
+                && locationDescriptionText.getText().toString().equals( "")
+                && routeText.getText().toString().equals( "")
+                && special_notice_text.getText().toString().equals( "")
+                && difficultiesText.getText().toString().equals( "")
+        )
         {
             id = UUID.randomUUID().toString();
 
@@ -196,7 +201,7 @@ public class LocationDetailAdder extends AppCompatActivity {
             place.put("description", locationDescriptionText.getText().toString());
             place.put("nearestTown", spin_cit.getSelectedItem().toString());
             place.put("route", routeText.getText().toString());
-            place.put("specialNotice", locationDescriptionText.getText().toString());
+            place.put("specialNotice", special_notice_text.getText().toString());
             place.put("difficultes", difficultiesText.getText().toString());
             place.put("pLikes", "0");
             place.put("pComments", "0");
@@ -259,7 +264,7 @@ public class LocationDetailAdder extends AppCompatActivity {
             });
         }
         else{
-            Toast.makeText(LocationDetailAdder.this, "Please insert an image", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LocationDetailAdder.this, "Please fill all the fields.", Toast.LENGTH_SHORT).show();
 
         }
 

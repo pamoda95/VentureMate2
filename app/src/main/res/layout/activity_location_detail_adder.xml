@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:gravity="center_horizontal"
         tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="1dp">
 
@@ -302,8 +303,6 @@
                 android:id="@+id/photo_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
                 android:layout_marginTop="18dp"
                 android:layout_marginRight="5dp"
                 android:gravity="center"
@@ -323,6 +322,7 @@
                 android:id="@+id/layout9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
                 android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
@@ -348,9 +348,10 @@
                     <ImageButton
                         android:id="@+id/camera_button"
                         style="@style/Widget.AppCompat.Button.Borderless"
-                        android:layout_width="80dp"
-                        android:layout_height="40dp"
-                        android:src="@drawable/ic_camera_foreground"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:src="@drawable/camera"
+                        android:scaleType="fitXY"
                         android:layout_marginTop="20dp"
                         android:background="@null"
                         android:gravity="center"
@@ -360,13 +361,14 @@
                     <ImageButton
                         android:id="@+id/gallery_button"
                         style="@style/Widget.AppCompat.Button.Borderless"
-                        android:layout_width="80dp"
-                        android:layout_height="40dp"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
                         android:layout_marginTop="20dp"
+                        android:scaleType="fitXY"
                         android:background="@null"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:src="@drawable/ic_gallery_foreground"
+                        android:src="@drawable/gallery"
                         android:text="Gallery" />
                 </LinearLayout>
 
@@ -376,6 +378,7 @@
                 android:id="@+id/layout11"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="20dp"
                 android:orientation="horizontal">
@@ -385,8 +388,7 @@
                     style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="153dp"
                     android:layout_height="38dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginLeft="20dp"
+
                     android:layout_marginTop="10dp"
                     android:background="@drawable/btn_shape_capsule"
                     android:gravity="center"

@@ -62,7 +62,7 @@ public class DisplayPlaceDetail extends AppCompatActivity {
                 Intent myIntent = new Intent(DisplayPlaceDetail.this, MapsActivity.class);
                 myIntent.putExtra("Place_name",place.getPlaceName());
                 myIntent.putExtra("latitude",place.getLatitude());
-                myIntent.putExtra("longitde",place.getLongitude());
+                myIntent.putExtra("longitude",place.getLongitude());
                 DisplayPlaceDetail.this.startActivity(myIntent);
             }
         });
