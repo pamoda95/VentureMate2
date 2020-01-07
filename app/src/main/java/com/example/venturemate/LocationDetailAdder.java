@@ -185,11 +185,11 @@ public class LocationDetailAdder extends AppCompatActivity {
 
     private void uploadData() {
 
-        if(selectedImage != null && placeNameText.getText().toString().equals( "")
-                && locationDescriptionText.getText().toString().equals( "")
-                && routeText.getText().toString().equals( "")
-                && special_notice_text.getText().toString().equals( "")
-                && difficultiesText.getText().toString().equals( "")
+        if(selectedImage != null && !placeNameText.getText().toString().equals( "")
+                && !locationDescriptionText.getText().toString().equals( "")
+                && !routeText.getText().toString().equals( "")
+                && !special_notice_text.getText().toString().equals( "")
+                && !difficultiesText.getText().toString().equals( "")
         )
         {
             id = UUID.randomUUID().toString();
